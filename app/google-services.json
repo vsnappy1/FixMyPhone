@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "957285870190",
+    "project_id": "fixmyphone-f7016",
+    "storage_bucket": "fixmyphone-f7016.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957285870190:android:1567b15bc134b64dd2947f",
+        "android_client_info": {
+          "package_name": "com.vaaq.fixmyphone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957285870190-2lr8534r3ghdj3ln0vk5u6roliiicccm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vaaq.fixmyphone",
+            "certificate_hash": "86b0187311bfc8a402c0ba2c5a721fc75898d88b"
+          }
+        },
+        {
+          "client_id": "957285870190-klcicjlou36g2nm9gs85tgpqirivcg8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkRZkxmTqI5Ur53zvvPl7OaPbeVhV5sgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957285870190-klcicjlou36g2nm9gs85tgpqirivcg8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
