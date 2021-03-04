@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">FixMyPhone</string>
+    <string-array name="gender">
+        <item>Select</item>
+
+        <item>SAMSUNG</item>
+        <item>APPLE</item>
+        <item>HUAWEI</item>
+        <item>NOKIA</item>
+        <item>SONY</item>
+        <item>LG</item>
+        <item>HTC</item>
+        <item>MOTOROLA</item>
+        <item>LENOVO</item>
+        <item>XIAOMI</item>
+        <item>GOOGLE</item>
+        <item>HONOR</item>
+        <item>OPPO</item>
+        <item>REALME</item>
+        <item>ONEPLUS</item>
+        <item>VIVO</item>
+        <item>BLACKBERRY</item>
+        <item>INFINIX</item>
+        <item>TECNO</item>
+
+    </string-array>
 </resources>

@@ -22,6 +22,8 @@ import com.vaaq.fixmyphone.models.User;
 import com.vaaq.fixmyphone.models.Vendor;
 import com.vaaq.fixmyphone.utils.utils;
 
+import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
+
 public class VendorSignupActivity extends AppCompatActivity {
 
     private static String TAG = "VendorSignupActivity";
@@ -151,7 +153,7 @@ public class VendorSignupActivity extends AppCompatActivity {
 
     void createDatabaseEntry(String uid, Vendor vendor){
 
-        FirebaseDatabase.getInstance().getReference().child("vendor").child(uid).setValue(vendor)
+        FirebaseDatabase.getInstance().getReference().child(VENDOR).child(uid).setValue(vendor)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

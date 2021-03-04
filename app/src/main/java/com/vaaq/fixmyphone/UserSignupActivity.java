@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.vaaq.fixmyphone.models.User;
 import com.vaaq.fixmyphone.utils.utils;
 
+import static com.vaaq.fixmyphone.utils.Constant.USER;
+
 public class UserSignupActivity extends AppCompatActivity {
 
     private static String TAG = "UserSignupActivity";
@@ -138,7 +140,7 @@ public class UserSignupActivity extends AppCompatActivity {
 
     void createDatabaseEntry(String uid, User user){
 
-        FirebaseDatabase.getInstance().getReference().child("user").child(uid).setValue(user)
+        FirebaseDatabase.getInstance().getReference().child(USER).child(uid).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
