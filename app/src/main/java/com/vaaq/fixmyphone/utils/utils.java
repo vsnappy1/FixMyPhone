@@ -13,10 +13,4 @@ public class utils {
         return matcher.find();
     }
 
-
-    public static boolean validatePassword(String password) {
-        return password.length() > 5;
-    }
-
-
 }

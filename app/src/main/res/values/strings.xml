@@ -2,7 +2,6 @@
     <string name="app_name">FixMyPhone</string>
     <string-array name="gender">
         <item>Select</item>
-
         <item>SAMSUNG</item>
         <item>APPLE</item>
         <item>HUAWEI</item>

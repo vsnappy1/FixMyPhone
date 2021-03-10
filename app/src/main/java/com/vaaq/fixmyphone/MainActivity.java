@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.vaaq.fixmyphone.UserActivities.UserLoginActivity;
+import com.vaaq.fixmyphone.VendorActivities.VendorLoginActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     Button buttonUser;

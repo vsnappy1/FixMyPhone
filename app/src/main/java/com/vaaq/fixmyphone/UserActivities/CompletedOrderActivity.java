@@ -1,14 +1,16 @@
-package com.vaaq.fixmyphone;
+package com.vaaq.fixmyphone.UserActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class GetQuoteActivity extends AppCompatActivity {
+import com.vaaq.fixmyphone.R;
+
+public class CompletedOrderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_quote);
+        setContentView(R.layout.activity_completed_order);
     }
 }

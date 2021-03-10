@@ -1,8 +1,10 @@
-package com.vaaq.fixmyphone;
+package com.vaaq.fixmyphone.UserActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
+import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.User;
+import com.vaaq.fixmyphone.utils.DialogHelper;
+import com.vaaq.fixmyphone.utils.NetworkHelper;
 import com.vaaq.fixmyphone.utils.utils;
 
 import static com.vaaq.fixmyphone.utils.Constant.USER;
@@ -37,12 +42,20 @@ public class UserSignupActivity extends AppCompatActivity {
     EditText editTextPassword;
     Button buttonSignup;
 
+    DialogHelper dialogHelper;
+    NetworkHelper networkHelper;
+
+    String email;
+    String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_signup);
 
         initViews();
+        dialogHelper = new DialogHelper(UserSignupActivity.this);
+        networkHelper = new NetworkHelper(UserSignupActivity.this);
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +64,8 @@ public class UserSignupActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 String phone = editTextPhone.getText().toString().trim();
                 String address = editTextAddress.getText().toString().trim();
-                String email = editTextEmail.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
-
+                email = editTextEmail.getText().toString().trim();
+                password = editTextPassword.getText().toString().trim();
 
                 if (name.length() < 3) {
                     Toast.makeText(UserSignupActivity.this, "Name should be at least 3 character long", Toast.LENGTH_SHORT).show();
@@ -91,22 +103,22 @@ public class UserSignupActivity extends AppCompatActivity {
                 }
 
                 User user = new User(name, phone, address, email, password);
-                signup(user);
-
+                new SignupTask().execute(user);
             }
         });
+
     }
 
     void signup(User user) {
-
-        String email = user.getEmail();
-        String password = user.getPassword();
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
                         Log.i(TAG, "Signup Canceled");
+                        dialogHelper.hideProgressDialog();
+                        Toast.makeText(UserSignupActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -119,6 +131,8 @@ public class UserSignupActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Signup Failure");
+                        dialogHelper.hideProgressDialog();
+                        Toast.makeText(UserSignupActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -138,14 +152,16 @@ public class UserSignupActivity extends AppCompatActivity {
 
     }
 
-    void createDatabaseEntry(String uid, User user){
+    void createDatabaseEntry(String uid, User user) {
 
         FirebaseDatabase.getInstance().getReference().child(USER).child(uid).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "Signup DB Success");
-
+                        Toast.makeText(UserSignupActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -179,5 +195,36 @@ public class UserSignupActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextSignupUserEmail);
         editTextPassword = findViewById(R.id.editTextSignupUserPassword);
         buttonSignup = findViewById(R.id.buttonSignupUser);
+    }
+
+    class SignupTask extends AsyncTask<User, Void, User> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialogHelper.showProgressDialog("Processing Request");
+        }
+
+        @Override
+        protected User doInBackground(User... users) {
+
+            if (networkHelper.isConnected()) {
+                return users[0];
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+
+            if (user != null) {
+                signup(user);
+            } else {
+                Toast.makeText(UserSignupActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                dialogHelper.hideProgressDialog();
+            }
+        }
     }
 }

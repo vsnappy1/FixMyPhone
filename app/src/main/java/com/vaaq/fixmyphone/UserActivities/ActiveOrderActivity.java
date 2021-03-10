@@ -1,14 +1,16 @@
-package com.vaaq.fixmyphone;
+package com.vaaq.fixmyphone.UserActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class UserProfileActivity extends AppCompatActivity {
+import com.vaaq.fixmyphone.R;
+
+public class ActiveOrderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_active_order);
     }
 }

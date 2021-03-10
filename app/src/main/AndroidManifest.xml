@@ -9,24 +9,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FixMyPhone">
-        <activity android:name=".UserProfileActivity"></activity>
-        <activity android:name=".QuotesActivity" />
-        <activity android:name=".CompletedOrderActivity" />
-        <activity android:name=".ActiveOrderActivity" />
-        <activity android:name=".GetQuoteActivity" />
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".VendorSignupActivity" />
-        <activity android:name=".VendorLoginActivity" />
-        <activity android:name=".UserSignupActivity" />
-        <activity android:name=".UserLoginActivity" />
-        <activity android:name=".SplashActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".UserActivities.OrderConfirmationActivity"></activity>
+        <activity android:name=".UserActivities.VendorProfileActivity" />
+        <activity android:name=".UserActivities.ResponsesActivity" />
+        <activity android:name=".VendorActivities.SubmitQuoteActivity" />
+        <activity android:name=".VendorActivities.AskQuoteRequestsActivity" />
+        <activity android:name=".VendorActivities.DashboardVendorActivity" />
+        <activity android:name=".UserActivities.UserProfileActivity" />
+        <activity android:name=".UserActivities.QuotesActivity" />
+        <activity android:name=".UserActivities.CompletedOrderActivity" />
+        <activity android:name=".UserActivities.ActiveOrderActivity" />
+        <activity android:name=".UserActivities.GetQuoteActivity" />
+        <activity android:name=".UserActivities.DashboardActivity" />
+        <activity android:name=".VendorActivities.VendorSignupActivity" />
+        <activity android:name=".VendorActivities.VendorLoginActivity" />
+        <activity android:name=".UserActivities.UserSignupActivity" />
+        <activity android:name=".UserActivities.UserLoginActivity" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserActivities.DashboardActivity">
+    tools:context=".VendorActivities.DashboardVendorActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     app:srcCompat="@drawable/ic_person" />
 
                 <ImageView
-                    android:id="@+id/imageViewDashboardEdit"
+                    android:id="@+id/imageViewDashboardVendorEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -52,7 +52,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textViewDashboardName"
+                android:id="@+id/textViewDashboardVendorName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -61,22 +61,22 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textViewDashboardAddress"
+                android:id="@+id/textViewDashboardVendorAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="TextView" />
 
             <Button
-                android:id="@+id/buttonDashboardGetQuote"
+                android:id="@+id/buttonDashboardVendorAskQuote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_corner_button"
-                android:text="Get Quote" />
+                android:text="Ask Quote Request" />
 
             <Button
-                android:id="@+id/buttonDashboardActiveOrder"
+                android:id="@+id/buttonDashboardVendorActiveOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -84,20 +84,13 @@
                 android:text="Active Orders" />
 
             <Button
-                android:id="@+id/buttonDashboardCompletedOrder"
+                android:id="@+id/buttonDashboardVendorCompletedOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_corner_button"
                 android:text="Completed Orders" />
 
-            <Button
-                android:id="@+id/buttonDashboardQuotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_corner_button"
-                android:text="Quotes" />
 
         </LinearLayout>
     </ScrollView>

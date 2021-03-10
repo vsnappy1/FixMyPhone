@@ -1,8 +1,10 @@
-package com.vaaq.fixmyphone;
+package com.vaaq.fixmyphone.VendorActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,8 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.vaaq.fixmyphone.models.User;
+import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.Vendor;
+import com.vaaq.fixmyphone.utils.DialogHelper;
+import com.vaaq.fixmyphone.utils.NetworkHelper;
 import com.vaaq.fixmyphone.utils.utils;
 
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
@@ -37,13 +41,20 @@ public class VendorSignupActivity extends AppCompatActivity {
     EditText editTextPassword;
     Button buttonSignup;
 
+    DialogHelper dialogHelper;
+    NetworkHelper networkHelper;
+
+    String email;
+    String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_signup);
-        
-        initViews();
 
+        initViews();
+        dialogHelper = new DialogHelper(VendorSignupActivity.this);
+        networkHelper = new NetworkHelper(VendorSignupActivity.this);
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +64,8 @@ public class VendorSignupActivity extends AppCompatActivity {
                 String phone = editTextPhone.getText().toString().trim();
                 String shopName = editTextShopName.getText().toString().trim();
                 String shopAddress = editTextShopAddress.getText().toString().trim();
-                String email = editTextEmail.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
-
+                email = editTextEmail.getText().toString().trim();
+                password = editTextPassword.getText().toString().trim();
 
                 if (name.length() < 3) {
                     Toast.makeText(VendorSignupActivity.this, "Name should be at least 3 character long", Toast.LENGTH_SHORT).show();
@@ -98,7 +108,7 @@ public class VendorSignupActivity extends AppCompatActivity {
                 }
 
                 Vendor vendor = new Vendor(name, phone, shopName, shopAddress, email, password);
-                signup(vendor);
+                new SignupTask().execute(vendor);
 
             }
         });
@@ -116,9 +126,6 @@ public class VendorSignupActivity extends AppCompatActivity {
     }
 
     void signup(Vendor vendor) {
-
-        String email = vendor.getEmail();
-        String password = vendor.getPassword();
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCanceledListener(new OnCanceledListener() {
@@ -151,20 +158,24 @@ public class VendorSignupActivity extends AppCompatActivity {
 
     }
 
-    void createDatabaseEntry(String uid, Vendor vendor){
+    void createDatabaseEntry(String uid, Vendor vendor) {
 
         FirebaseDatabase.getInstance().getReference().child(VENDOR).child(uid).setValue(vendor)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "Signup DB Success");
-
+                        dialogHelper.hideProgressDialog();
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), DashboardVendorActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Signup DB Failure");
+                        dialogHelper.hideProgressDialog();
+
 
                     }
                 })
@@ -172,6 +183,7 @@ public class VendorSignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.i(TAG, "Signup DB Complete");
+                        dialogHelper.hideProgressDialog();
 
                     }
                 })
@@ -179,9 +191,42 @@ public class VendorSignupActivity extends AppCompatActivity {
                     @Override
                     public void onCanceled() {
                         Log.i(TAG, "Signup DB Canceled");
+                        dialogHelper.hideProgressDialog();
+
 
                     }
                 });
+    }
+
+    class SignupTask extends AsyncTask<Vendor, Void, Vendor> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialogHelper.showProgressDialog("Processing Request");
+        }
+
+        @Override
+        protected Vendor doInBackground(Vendor... vendor) {
+
+            if (networkHelper.isConnected()) {
+                return vendor[0];
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Vendor vendor) {
+            super.onPostExecute(vendor);
+
+            if (vendor != null) {
+                signup(vendor);
+            } else {
+                Toast.makeText(VendorSignupActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                dialogHelper.hideProgressDialog();
+            }
+        }
     }
 
 }

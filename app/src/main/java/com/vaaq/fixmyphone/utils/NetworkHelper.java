@@ -12,7 +12,7 @@ public class NetworkHelper {
 
     Context context;
 
-    public NetworkHelper(Context context, OnResponse onResponse) {
+    public NetworkHelper(Context context) {
         this.context = context;
         this.onResponse = onResponse;
     }
