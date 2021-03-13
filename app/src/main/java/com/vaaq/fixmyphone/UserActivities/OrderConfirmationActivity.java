@@ -28,6 +28,7 @@ import com.vaaq.fixmyphone.Adapters.QuoteAdapter;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.models.Quote;
+import com.vaaq.fixmyphone.utils.Constant;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
 import java.text.ParseException;
@@ -112,6 +113,10 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     void createNewOrder() {
 
         ActiveOrder activeOrder = new ActiveOrder(
+                null,
+                Constant.ORDER_STATUS_ACTIVE,
+                Constant.PAYMENT_STATUS_PENDING,
+                Constant.RAR_STATUS_NOT_RATED,
                 DashboardActivity.userName,
                 VendorProfileActivity.vendorName,
                 uid,

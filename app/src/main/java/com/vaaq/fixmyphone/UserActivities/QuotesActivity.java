@@ -127,7 +127,7 @@ public class QuotesActivity extends AppCompatActivity {
             DataSnapshot snapshot = dataSnapshots[0];
 
             if (snapshot.getValue() == null) {
-                return null;
+                return new ArrayList<>();
             }
             ArrayList<GetQuote> list = new ArrayList<>();
 
@@ -150,22 +150,24 @@ public class QuotesActivity extends AppCompatActivity {
                 long time = Long.parseLong(getQuoteMap.get("time").toString());
                 ArrayList<Quote> listQuotes = new ArrayList<>();
 
-                HashMap<String, Object> responses = (HashMap<String, Object>) getQuoteMap.get("responses");
-                ArrayList<String> keysResponse = new ArrayList<>(responses.keySet());
+                try {
+                    HashMap<String, Object> responses = (HashMap<String, Object>) getQuoteMap.get("responses");
+                    ArrayList<String> keysResponse = new ArrayList<>(responses.keySet());
+                    for (String keyRes : keysResponse) {
+                        HashMap<String, Object> res = (HashMap<String, Object>) responses.get(keyRes);
 
-                for (String keyRes : keysResponse) {
-                    HashMap<String, Object> res = (HashMap<String, Object>) responses.get(keyRes);
+                        String shopName = res.get("shopName").toString();
+                        String message = res.get("message").toString();
+                        String quote = res.get("quote").toString();
+                        String vendorId = res.get("vendorId").toString();
+                        long timeQuote = Long.parseLong(getQuoteMap.get("time").toString());
 
-                    String shopName = res.get("shopName").toString();
-                    String message = res.get("message").toString();
-                    String quote = res.get("quote").toString();
-                    String vendorId = res.get("vendorId").toString();
-                    long timeQuote = Long.parseLong(getQuoteMap.get("time").toString());
-
-                    Quote quote1 = new Quote(shopName, message, quote, vendorId, timeQuote);
-                    listQuotes.add(quote1);
+                        Quote quote1 = new Quote(shopName, message, quote, vendorId, timeQuote);
+                        listQuotes.add(quote1);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-
                 GetQuote getQuote = new GetQuote(name, brand, model, description, uid, time, listQuotes);
                 list.add(getQuote);
 

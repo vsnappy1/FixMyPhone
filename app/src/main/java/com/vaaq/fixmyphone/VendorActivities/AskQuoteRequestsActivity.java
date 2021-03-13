@@ -113,7 +113,7 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
             DataSnapshot snapshot = dataSnapshots[0];
 
             if(snapshot.getValue() == null){
-                return null;
+                return new ArrayList<>();
             }
             ArrayList<GetQuote> list = new ArrayList<>();
 

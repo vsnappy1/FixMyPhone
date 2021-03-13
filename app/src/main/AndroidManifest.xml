@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vaaq.fixmyphone">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FixMyPhone">
-        <activity android:name=".UserActivities.OrderConfirmationActivity"></activity>
+        <activity android:name=".UserActivities.CompleteOrderActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".UserActivities.OrderDashboardActivity" />
+        <activity android:name=".VendorActivities.CompletedOrderVendorActivity" />
+        <activity android:name=".VendorActivities.ActiveOrderVendorActivity" />
+        <activity android:name=".UserActivities.OrderConfirmationActivity" />
         <activity android:name=".UserActivities.VendorProfileActivity" />
         <activity android:name=".UserActivities.ResponsesActivity" />
         <activity android:name=".VendorActivities.SubmitQuoteActivity" />

@@ -1,6 +1,12 @@
 package com.vaaq.fixmyphone.models;
 
-public class ActiveOrder {
+import java.io.Serializable;
+
+public class ActiveOrder implements Serializable {
+    private String orderId;
+    private String orderStatus;
+    private String paymentStatus;
+    private String rateAndReviewStatus;
     private String userName;
     private String vendorName;
     private String userId;
@@ -16,7 +22,12 @@ public class ActiveOrder {
     public ActiveOrder() {
     }
 
-    public ActiveOrder(String userName, String vendorName, String userId, String vendorId, String brand, String model, String description, String shopName, String message, String quote, long time) {
+
+    public ActiveOrder(String orderId, String orderStatus, String paymentStatus, String rateAndReviewStatus, String userName, String vendorName, String userId, String vendorId, String brand, String model, String description, String shopName, String message, String quote, long time) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        this.paymentStatus = paymentStatus;
+        this.rateAndReviewStatus = rateAndReviewStatus;
         this.userName = userName;
         this.vendorName = vendorName;
         this.userId = userId;
@@ -28,6 +39,18 @@ public class ActiveOrder {
         this.message = message;
         this.quote = quote;
         this.time = time;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public String getRateAndReviewStatus() {
+        return rateAndReviewStatus;
     }
 
     public String getUserName() {
@@ -72,5 +95,9 @@ public class ActiveOrder {
 
     public long getTime() {
         return time;
+    }
+
+    public String getOrderId() {
+        return orderId;
     }
 }

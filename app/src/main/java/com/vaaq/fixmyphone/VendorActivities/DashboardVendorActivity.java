@@ -30,10 +30,10 @@ public class DashboardVendorActivity extends AppCompatActivity {
 
     ImageView imageViewEdit;
     TextView textViewUsername;
-    TextView  textViewUserAddress;
-    Button      buttonAskQuoteRequest;
-    Button    buttonActiveOrder;
-    Button    buttonCompletedOrder;
+    TextView textViewUserAddress;
+    Button buttonAskQuoteRequest;
+    Button buttonActiveOrder;
+    Button buttonCompletedOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,25 @@ public class DashboardVendorActivity extends AppCompatActivity {
             }
         });
 
+        buttonActiveOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardVendorActivity.this, ActiveOrderVendorActivity.class));
+            }
+        });
+
+        buttonCompletedOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardVendorActivity.this, CompletedOrderVendorActivity.class));
+            }
+        });
+
         fetchVendorDetails();
 
     }
 
-    void initViews(){
+    void initViews() {
         imageViewEdit = findViewById(R.id.imageViewDashboardVendorEdit);
         textViewUsername = findViewById(R.id.textViewDashboardVendorName);
         textViewUserAddress = findViewById(R.id.textViewDashboardVendorAddress);
@@ -62,7 +76,7 @@ public class DashboardVendorActivity extends AppCompatActivity {
         buttonCompletedOrder = findViewById(R.id.buttonDashboardVendorCompletedOrder);
     }
 
-    void fetchVendorDetails(){
+    void fetchVendorDetails() {
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 

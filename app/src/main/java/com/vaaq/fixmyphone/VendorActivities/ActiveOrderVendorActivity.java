@@ -1,4 +1,4 @@
-package com.vaaq.fixmyphone.UserActivities;
+package com.vaaq.fixmyphone.VendorActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,19 +20,19 @@ import com.google.firebase.database.ValueEventListener;
 import com.vaaq.fixmyphone.Adapters.ActiveOrderUserAdapter;
 import com.vaaq.fixmyphone.ChatActivity;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.UserActivities.ActiveOrderActivity;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Queue;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
 import static com.vaaq.fixmyphone.utils.Constant.USER;
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
-public class ActiveOrderActivity extends AppCompatActivity {
+public class ActiveOrderVendorActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ActiveOrderUserAdapter adapter;
@@ -49,7 +48,7 @@ public class ActiveOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_active_order);
+        setContentView(R.layout.activity_active_order_vendor);
 
         dialogHelper = new DialogHelper(this);
 
@@ -70,20 +69,19 @@ public class ActiveOrderActivity extends AppCompatActivity {
 //                    2169874
 //            ));
 //        }
+
         adapter = new ActiveOrderUserAdapter(list, this, this);
         adapter.setOnItemClickListener(new ActiveOrderUserAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
-                Intent intent = new Intent(ActiveOrderActivity.this, ChatActivity.class);
+                Intent intent = new Intent(ActiveOrderVendorActivity.this, ChatActivity.class);
                 intent.putExtra("activeOrder", list.get(position));
-                intent.putExtra("from", USER);
+                intent.putExtra("from", VENDOR);
                 startActivity(intent);
-
             }
         });
 
-        recyclerView = findViewById(R.id.recyclerViewActiveOrderUser);
+        recyclerView = findViewById(R.id.recyclerViewActiveOrderVendor);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -100,7 +98,7 @@ public class ActiveOrderActivity extends AppCompatActivity {
         DatabaseReference firebaseDatabaseReference = FirebaseDatabase
                 .getInstance()
                 .getReference()
-                .child(USER)
+                .child(VENDOR)
                 .child(uid)
                 .child(ACTIVE_ORDER_IDS);
 
@@ -120,7 +118,7 @@ public class ActiveOrderActivity extends AppCompatActivity {
                 if (activeOrderIds.size() > 0) {
                     getActiveOrder(activeOrderIds.get(0));
                 } else {
-                    Toast.makeText(ActiveOrderActivity.this, "No Active Order", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActiveOrderVendorActivity.this, "No Active Order", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -135,6 +133,7 @@ public class ActiveOrderActivity extends AppCompatActivity {
     }
 
     void getActiveOrder(String orderId) {
+
 
 
         DatabaseReference firebaseDatabaseReference = FirebaseDatabase
@@ -184,9 +183,10 @@ public class ActiveOrderActivity extends AppCompatActivity {
 
                 list.add(activeOrder);
                 activeOrderIds.remove(0);
-                if (activeOrderIds.size() > 0) {
+                if(activeOrderIds.size() > 0){
                     getActiveOrder(activeOrderIds.get(0));
-                } else {
+                }
+                else {
                     adapter.notifyDataSetChanged();
                     dialogHelper.hideProgressDialog();
                 }
@@ -200,6 +200,5 @@ public class ActiveOrderActivity extends AppCompatActivity {
 
         firebaseDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
     }
-
 
 }
