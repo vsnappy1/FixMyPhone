@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
@@ -61,6 +63,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirmation);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -256,5 +260,14 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             System.out.println(epoch);
         }
         return epoch;
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Order Confirmation");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

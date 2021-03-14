@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import com.vaaq.fixmyphone.utils.DialogHelper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.VendorActivities.DashboardVendorActivity.SHOP_NAME;
 import static com.vaaq.fixmyphone.utils.Constant.GET_QUOTE;
@@ -52,6 +55,8 @@ public class QuotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quotes);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -194,7 +199,15 @@ public class QuotesActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(QuotesActivity.this, "No requests", Toast.LENGTH_SHORT).show();
             }
-
         }
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Quotes");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

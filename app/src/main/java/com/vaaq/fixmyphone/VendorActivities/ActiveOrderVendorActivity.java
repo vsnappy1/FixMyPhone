@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,7 @@ import com.vaaq.fixmyphone.utils.DialogHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
@@ -49,26 +52,12 @@ public class ActiveOrderVendorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_order_vendor);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         dialogHelper = new DialogHelper(this);
 
         list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(new ActiveOrder(
-//                    "orderId " + i,
-//                    "userName",
-//                    "vendorName",
-//                    "userId",
-//                    "vendorId",
-//                    "brand",
-//                    "model",
-//                    "description",
-//                    "shopName",
-//                    "message",
-//                    "quote",
-//                    2169874
-//            ));
-//        }
 
         adapter = new ActiveOrderUserAdapter(list, this, this);
         adapter.setOnItemClickListener(new ActiveOrderUserAdapter.ClickListener() {
@@ -107,6 +96,12 @@ public class ActiveOrderVendorActivity extends AppCompatActivity {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.getValue() == null){
+                    Toast.makeText(ActiveOrderVendorActivity.this, "No Active Orders", Toast.LENGTH_SHORT).show();
+                    dialogHelper.hideProgressDialog();
+                    return;
+                }
                 Log.i(TAG, snapshot.getValue().toString());
                 HashMap<String, String> hashMap = (HashMap<String, String>) snapshot.getValue();
                 ArrayList<String> keys = new ArrayList<>(hashMap.keySet());
@@ -201,4 +196,11 @@ public class ActiveOrderVendorActivity extends AppCompatActivity {
         firebaseDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
     }
 
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Active Orders");
+        imageView.setOnClickListener(v -> onBackPressed());
+    }
 }

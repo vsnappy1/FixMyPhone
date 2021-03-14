@@ -27,6 +27,8 @@ import com.vaaq.fixmyphone.models.Vendor;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 import com.vaaq.fixmyphone.utils.NetworkHelper;
 
+import java.util.Objects;
+
 public class VendorLoginActivity extends AppCompatActivity {
 
     private static String TAG = "VendorLoginActivity";
@@ -44,6 +46,7 @@ public class VendorLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_login);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initView();
 

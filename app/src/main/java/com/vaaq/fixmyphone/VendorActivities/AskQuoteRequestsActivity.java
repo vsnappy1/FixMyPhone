@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.vaaq.fixmyphone.utils.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.GET_QUOTE;
 
@@ -44,6 +46,8 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_quote_requests_screen);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -167,5 +171,14 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Requests");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

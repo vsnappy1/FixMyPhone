@@ -10,6 +10,8 @@ import android.widget.Button;
 import com.vaaq.fixmyphone.UserActivities.UserLoginActivity;
 import com.vaaq.fixmyphone.VendorActivities.VendorLoginActivity;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     Button buttonUser;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Objects.requireNonNull(getSupportActionBar()).hide();
         initViews();
 
         buttonUser.setOnClickListener(new View.OnClickListener() {

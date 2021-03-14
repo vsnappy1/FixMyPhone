@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corner_button">
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="282dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_corner_rating_boarder"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="40dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewStart1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_star_border" />
+
+        <ImageView
+            android:id="@+id/imageViewStart2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_star_border" />
+
+        <ImageView
+            android:id="@+id/imageViewStart3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_star_border" />
+
+        <ImageView
+            android:id="@+id/imageViewStart4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_star_border" />
+
+        <ImageView
+            android:id="@+id/imageViewStart5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_star_border" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/editTextShareExperience"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner_review_boarder"
+        android:ems="10"
+        android:gravity="start"
+        android:hint="Share your experence "
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+    <Button
+        android:id="@+id/buttonShareExperience"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_corner_review_button"
+        android:text="Share Experience"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextShareExperience"
+        app:layout_constraintStart_toStartOf="@+id/editTextShareExperience"
+        app:layout_constraintTop_toBottomOf="@+id/editTextShareExperience" />
+</androidx.constraintlayout.widget.ConstraintLayout>

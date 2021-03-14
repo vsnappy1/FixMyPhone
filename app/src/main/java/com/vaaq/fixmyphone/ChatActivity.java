@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.CONVERSATION;
@@ -101,8 +102,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
-        getSupportActionBar().hide();
 
         dialogHelper = new DialogHelper(this);
 

@@ -17,7 +17,6 @@
         android:theme="@style/Theme.FixMyPhone">
         <activity android:name=".UserActivities.CompleteOrderActivity"></activity>
         <activity android:name=".ChatActivity" />
-        <activity android:name=".UserActivities.OrderDashboardActivity" />
         <activity android:name=".VendorActivities.CompletedOrderVendorActivity" />
         <activity android:name=".VendorActivities.ActiveOrderVendorActivity" />
         <activity android:name=".UserActivities.OrderConfirmationActivity" />

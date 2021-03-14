@@ -27,6 +27,8 @@ import com.vaaq.fixmyphone.utils.DialogHelper;
 import com.vaaq.fixmyphone.utils.NetworkHelper;
 import com.vaaq.fixmyphone.utils.utils;
 
+import java.util.Objects;
+
 public class UserLoginActivity extends AppCompatActivity {
 
     private static String TAG = "TAKA UserLoginActivity";
@@ -43,6 +45,7 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initView();
 

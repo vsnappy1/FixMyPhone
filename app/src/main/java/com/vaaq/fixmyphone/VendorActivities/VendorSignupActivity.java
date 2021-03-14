@@ -26,6 +26,8 @@ import com.vaaq.fixmyphone.utils.DialogHelper;
 import com.vaaq.fixmyphone.utils.NetworkHelper;
 import com.vaaq.fixmyphone.utils.utils;
 
+import java.util.Objects;
+
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
 public class VendorSignupActivity extends AppCompatActivity {
@@ -51,6 +53,7 @@ public class VendorSignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_signup);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initViews();
         dialogHelper = new DialogHelper(VendorSignupActivity.this);

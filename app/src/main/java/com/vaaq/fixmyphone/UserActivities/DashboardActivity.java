@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vaaq.fixmyphone.R;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.USER;
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
@@ -42,6 +43,8 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -118,5 +121,15 @@ public class DashboardActivity extends AppCompatActivity {
         };
 
         firebaseDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+        imageView.setVisibility(View.GONE   );
+
+        textView.setText("Dashboard");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

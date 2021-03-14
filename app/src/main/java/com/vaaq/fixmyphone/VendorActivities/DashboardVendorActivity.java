@@ -19,8 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.UserActivities.ResponsesActivity;
+import com.vaaq.fixmyphone.UserActivities.VendorProfileActivity;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
@@ -28,6 +31,7 @@ public class DashboardVendorActivity extends AppCompatActivity {
 
     public static String SHOP_NAME = "ABC";
 
+    ImageView imageViewProfile;
     ImageView imageViewEdit;
     TextView textViewUsername;
     TextView textViewUserAddress;
@@ -39,6 +43,8 @@ public class DashboardVendorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_vendor);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -63,11 +69,22 @@ public class DashboardVendorActivity extends AppCompatActivity {
             }
         });
 
+        imageViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(DashboardVendorActivity.this, VendorProfileActivity.class);
+                intent1.putExtra("vendorId",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                intent1.putExtra("from", VENDOR);
+                startActivity(intent1);
+            }
+        });
+
         fetchVendorDetails();
 
     }
 
     void initViews() {
+        imageViewProfile = findViewById(R.id.imageViewProfile);
         imageViewEdit = findViewById(R.id.imageViewDashboardVendorEdit);
         textViewUsername = findViewById(R.id.textViewDashboardVendorName);
         textViewUserAddress = findViewById(R.id.textViewDashboardVendorAddress);
@@ -102,5 +119,14 @@ public class DashboardVendorActivity extends AppCompatActivity {
         };
 
         firebaseDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Dashboard");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

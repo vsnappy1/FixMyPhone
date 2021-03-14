@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.vaaq.fixmyphone.models.Quote;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.VendorActivities.DashboardVendorActivity.SHOP_NAME;
 import static com.vaaq.fixmyphone.utils.Constant.GET_QUOTE;
@@ -49,6 +51,8 @@ public class SubmitQuoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_quote);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
 
@@ -148,5 +152,14 @@ public class SubmitQuoteActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.editTextSubmitQuoteDescription);
         editTextQuote = findViewById(R.id.editTextSubmitQuoteQuote);
         buttonSubmit = findViewById(R.id.buttonSubmitQuoteSubmit);
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Submit Quote");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.vaaq.fixmyphone.Adapters.QuoteAdapter;
 import com.vaaq.fixmyphone.Adapters.ResponseAdapter;
@@ -16,6 +18,10 @@ import com.vaaq.fixmyphone.models.GetQuote;
 import com.vaaq.fixmyphone.models.Quote;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static com.vaaq.fixmyphone.utils.Constant.USER;
+import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
 public class ResponsesActivity extends AppCompatActivity {
 
@@ -35,6 +41,8 @@ public class ResponsesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_responses);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
 
         Intent intent = getIntent();
@@ -53,6 +61,7 @@ public class ResponsesActivity extends AppCompatActivity {
                 vendorId = list.get(position).getVendorId();
 
                 intent1.putExtra("vendorId",list.get(position).getVendorId());
+                intent1.putExtra("from", USER);
                 startActivity(intent1);
             }
         });
@@ -61,6 +70,15 @@ public class ResponsesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Responses");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 
 

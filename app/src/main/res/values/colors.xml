@@ -14,5 +14,7 @@
     <color name="dark_grey">#182c47</color>
     <color name="colorPrimary">#CFCFCF</color>
 
+    <color name="review_green">#75cfb8</color>
+
 
 </resources>

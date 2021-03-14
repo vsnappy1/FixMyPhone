@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -27,6 +29,7 @@ import com.vaaq.fixmyphone.utils.DialogHelper;
 import com.vaaq.fixmyphone.utils.NetworkHelper;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.GET_QUOTE;
 import static com.vaaq.fixmyphone.utils.Constant.USER;
@@ -48,6 +51,8 @@ public class GetQuoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_quote);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        headerSetup();
 
         initViews();
         dialogHelper = new DialogHelper(GetQuoteActivity.this);
@@ -165,5 +170,14 @@ public class GetQuoteActivity extends AppCompatActivity {
                         Log.i(TAG, "Signup DB Canceled");
                     }
                 });
+    }
+
+
+    void headerSetup(){
+        TextView textView = findViewById(R.id.textViewHeaderTitle);
+        ImageView imageView = findViewById(R.id.imageViewBack);
+
+        textView.setText("Get Quote");
+        imageView.setOnClickListener(v -> onBackPressed());
     }
 }
