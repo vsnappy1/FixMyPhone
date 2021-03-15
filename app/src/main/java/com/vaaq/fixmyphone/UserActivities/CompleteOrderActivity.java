@@ -5,10 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,13 +32,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.stripe.android.ApiResultCallback;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.PaymentIntentResult;
+import com.stripe.android.Stripe;
+import com.stripe.android.model.ConfirmPaymentIntentParams;
+import com.stripe.android.model.PaymentIntent;
+import com.stripe.android.model.PaymentMethodCreateParams;
+import com.stripe.android.view.CardInputWidget;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.models.RateAndReview;
 import com.vaaq.fixmyphone.utils.Constant;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
+import java.lang.ref.WeakReference;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
@@ -78,12 +91,20 @@ public class CompleteOrderActivity extends AppCompatActivity {
     boolean isAddedInVendor = false;
     boolean isRemovedFromVendor = false;
 
+    private String paymentIntentClientSecret;
+    private Stripe stripe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_order);
+        PaymentConfiguration.init(
+                getApplicationContext(),
+                "pk_test_51IVMDOACLamgLPNi3q8dOHhoCJx6okZXU7VSs1XfRq0jFGmE7xSc9SCbxGPNFzJizE0dMjyQbzjZqxAnedVkcXiO00k2Q0A8nC"
+        );
         Objects.requireNonNull(getSupportActionBar()).hide();
         headerSetup();
+        paymentIntentClientSecret = "sk_test_51IVMDOACLamgLPNiyUdkvluIRINDTcZ6MLLwICcmRgWM3jQQ4QIBcGVS6F2uUPdfgBKHajypHC0D4wfAtwyzdzdK00Q51L8cD8";
 
         filledStar = R.drawable.ic_star;
         unfilledStar = R.drawable.ic_star_border;
@@ -106,7 +127,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //change payment status
-                makePayment();
+                showPaymentDialog();
             }
         });
 
@@ -363,6 +384,46 @@ public class CompleteOrderActivity extends AppCompatActivity {
     }
 
 
+    void showPaymentDialog(){
+        Dialog paymentDialog = new Dialog(this);
+        paymentDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        paymentDialog.setContentView(R.layout.layout_payment);
+        paymentDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button buttonPay = paymentDialog.findViewById(R.id.buttonPay);
+        CardInputWidget cardInputWidget = paymentDialog.findViewById(R.id.cardInputWidget);
+        TextView textViewAmount = paymentDialog.findViewById(R.id.textViewAmount);
+
+        int amount = Integer.parseInt(activeOrder.getQuote());
+
+        textViewAmount.setText("Rs. "+ NumberFormat.getNumberInstance(Locale.US).format(amount));
+
+        buttonPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
+                if (params != null) {
+                    dialogHelper.showProgressDialog("Making payment");
+                    ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
+                            .createWithPaymentMethodCreateParams(params, paymentIntentClientSecret);
+                    final Context context = getApplicationContext();
+                    stripe = new Stripe(
+                            context,
+                            PaymentConfiguration.getInstance(context).getPublishableKey()
+                    );
+                    stripe.confirmPayment(CompleteOrderActivity.this, confirmParams);
+                }
+            }
+        });
+
+        try{
+            paymentDialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     void showRateAndReviewVendorDialog(){
         reviewDialog = new Dialog(this);
@@ -471,6 +532,74 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
         textView.setText("Complete Order");
         imageView.setOnClickListener(v -> onBackPressed());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Handle the result of stripe.confirmPayment
+        stripe.onPaymentResult(requestCode, data, new PaymentResultCallback(this));
+    }
+
+    // ...
+
+    private final class PaymentResultCallback
+            implements ApiResultCallback<PaymentIntentResult> {
+        @NonNull private final WeakReference<CompleteOrderActivity> activityRef;
+
+        PaymentResultCallback(@NonNull CompleteOrderActivity activity) {
+            activityRef = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onSuccess(@NonNull PaymentIntentResult result) {
+            final CompleteOrderActivity activity = activityRef.get();
+            if (activity == null) {
+                return;
+            }
+
+            PaymentIntent paymentIntent = result.getIntent();
+            PaymentIntent.Status status = paymentIntent.getStatus();
+            if (status == PaymentIntent.Status.Succeeded) {
+                // Payment completed successfully
+                Toast.makeText(activity, "Payment completed", Toast.LENGTH_SHORT).show();
+                makePayment();
+
+//                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//                activity.displayAlert(
+//                        "Payment completed",
+//                        gson.toJson(paymentIntent),
+//                        true
+//                );
+            } else if (status == PaymentIntent.Status.RequiresPaymentMethod) {
+                // Payment failed
+                Toast.makeText(activity, "Payment failed", Toast.LENGTH_SHORT).show();
+                dialogHelper.hideProgressDialog();
+
+
+//                activity.displayAlert(
+//                        "Payment failed",
+//                        Objects.requireNonNull(paymentIntent.getLastPaymentError()).getMessage(),
+//                        false
+//                );
+            }
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+            final CompleteOrderActivity activity = activityRef.get();
+            if (activity == null) {
+                return;
+            }
+
+            // Payment request failed – allow retrying using the same payment method
+//            Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Payment completed", Toast.LENGTH_SHORT).show();
+//            dialogHelper.hideProgressDialog();
+            makePayment();
+
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,17 +30,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vaaq.fixmyphone.Adapters.QuoteAdapter;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.SplashActivity;
 import com.vaaq.fixmyphone.VendorActivities.DashboardVendorActivity;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.models.Quote;
 import com.vaaq.fixmyphone.utils.Constant;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
@@ -199,15 +211,12 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String from = getIntent().getStringExtra("from");
-                if(VENDOR.equals(from)){
-                    Intent intent = new Intent(getApplicationContext(), DashboardVendorActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }else {
-                    dialogHelper.showProgressDialog("Creating an order...");
-                    deleteGetQuoteRequest();
-                }
+
+                dialogHelper.showProgressDialog("Creating pickup request...");
+                new PickupRequestTask().execute(new JSONObject());
+
+
+
 
             }
         });
@@ -372,4 +381,104 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         textView.setText("Order Confirmation");
         imageView.setOnClickListener(v -> onBackPressed());
     }
+
+
+    class PickupRequestTask extends AsyncTask<JSONObject, Void, String> {
+
+        @Override
+        protected String doInBackground(JSONObject... items) {
+
+            JSONObject jsonObject = items[0];
+            String pickupDate = null;
+            String pickupFromTime = null;
+            String pickupToTime = null;
+            String customerName = null;
+            String customerAddress = null;
+            String customerPhone = null;
+
+            try {
+                pickupDate = jsonObject.getString("pickupDate");
+                pickupFromTime = jsonObject.getString("pickupFromTime");
+                pickupToTime = jsonObject.getString("pickupToTime");
+                customerName = jsonObject.getString("customerName");
+                customerAddress = jsonObject.getString("customerAddress");
+                customerPhone = jsonObject.getString("customerPhone");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/json");
+//            RequestBody body = RequestBody.create(mediaType,
+//                    "{\"pickupDate\":\"20180101\"," +
+//                            "\"pickupFromTime\":\"09:00:00\"," +
+//                            "\"pickupToTime\":\"15:00:00\"," +
+//                            "\"customerNo\":\"0\"," +
+//                            "\"customerName\":\"Name\"," +
+//                            "\"customerAddress\":\"885 Timaz Point\"," +
+//                            "\"customerPhone\":\"0\"," +
+//                            "\"station\":\"X\"," +
+//                            "\"area\":\"X\"," +
+//                            "\"careOf\":\"0\"," +
+//                            "\"expectedWeight\":\"200g\"," +
+//                            "\"userName\":\"Name\"," +
+//                            "\"pieces\":\"1\"}");
+
+            RequestBody body = RequestBody.create(mediaType,
+                    "{\"pickupDate\":\""+pickupDate+"\"," +
+                            "\"pickupFromTime\":\""+pickupFromTime+"\"," +
+                            "\"pickupToTime\":\""+pickupToTime+"\"," +
+                            "\"customerNo\":\"0\"," +
+                            "\"customerName\":\""+customerName+"\"," +
+                            "\"customerAddress\":\""+customerAddress+"\"," +
+                            "\"customerPhone\":\""+customerPhone+"\"," +
+                            "\"station\":\"X\"," +
+                            "\"area\":\"X\"," +
+                            "\"careOf\":\"0\"," +
+                            "\"expectedWeight\":\"200g\"," +
+                            "\"userName\":\""+customerName+"\"," +
+                            "\"pieces\":\"1\"}");
+
+            Request request = new Request.Builder()
+                    .url("https://apis.tcscourier.com/production/v1/pms/pickup")
+                    .post(body)
+                    .addHeader("X-IBM-Client-Id", "cd989018-8037-43b1-b0f0-3aa87b10273e")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("accept", "application/json")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                return response.message();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            dialogHelper.hideProgressDialog();
+
+            Toast.makeText(OrderConfirmationActivity.this, "Done", Toast.LENGTH_SHORT).show();
+            String from = getIntent().getStringExtra("from");
+            if(VENDOR.equals(from)){
+                Intent intent = new Intent(getApplicationContext(), DashboardVendorActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }else {
+                dialogHelper.showProgressDialog("Creating an order...");
+                deleteGetQuoteRequest();
+            }
+//            if(s.equals("Unauthorized")){
+//
+//            }
+        }
+    }
+
+
+
 }
