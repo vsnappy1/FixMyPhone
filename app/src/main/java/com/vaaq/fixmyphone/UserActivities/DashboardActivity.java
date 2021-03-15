@@ -38,7 +38,6 @@ public class DashboardActivity extends AppCompatActivity {
     public static String address;
     public static String userName;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -51,6 +51,7 @@ import com.google.firebase.storage.UploadTask;
 import com.vaaq.fixmyphone.Adapters.ChatAdapter;
 import com.vaaq.fixmyphone.UserActivities.ActiveOrderActivity;
 import com.vaaq.fixmyphone.UserActivities.CompleteOrderActivity;
+import com.vaaq.fixmyphone.UserActivities.OrderConfirmationActivity;
 import com.vaaq.fixmyphone.VendorActivities.DashboardVendorActivity;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.models.Message;
@@ -65,6 +66,12 @@ import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.CONVERSATION;
+import static com.vaaq.fixmyphone.utils.Constant.ORDER_STATUS_ACTIVE;
+import static com.vaaq.fixmyphone.utils.Constant.ORDER_STATUS_COMPLETE;
+import static com.vaaq.fixmyphone.utils.Constant.PAYMENT_STATUS_PAID;
+import static com.vaaq.fixmyphone.utils.Constant.PAYMENT_STATUS_PENDING;
+import static com.vaaq.fixmyphone.utils.Constant.RAR_STATUS_NOT_RATED;
+import static com.vaaq.fixmyphone.utils.Constant.RAR_STATUS_RATED;
 import static com.vaaq.fixmyphone.utils.Constant.USER;
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
@@ -82,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
     ProgressBar progressBar;
     EditText editTextMessage;
     RecyclerView recyclerView;
+    TextView textViewHeaderTitle;
 
     String senderName, senderId;
 
@@ -104,46 +112,67 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-
         dialogHelper = new DialogHelper(this);
 
         Intent intent = getIntent();
         activeOrder = (ActiveOrder)intent.getSerializableExtra("activeOrder");
 
-
         ImageView imageViewBack = findViewById(R.id.imageViewBack);
         ImageView imageViewDone = findViewById(R.id.imageViewDone);
         imageViewBack.setOnClickListener(v -> onBackPressed());
 
+        intiViews();
+        setupHeaderTitle();
+
         if(intent.getStringExtra("from").equals(VENDOR)){
             imageViewDone.setVisibility(View.GONE);
+            if(activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PAID)){
+                imageViewDone.setVisibility(View.VISIBLE);
+                imageViewDone.setImageResource(R.drawable.ic_delivery_dining);
+                imageViewDone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent1 = new Intent(ChatActivity.this, OrderConfirmationActivity.class);
+                        intent1.putExtra("from", VENDOR);
+                        startActivity(intent1);
+                    }
+                });
+            }
+
         }
         else {
             imageViewDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    new AlertDialog.Builder(ChatActivity.this)
-                            .setTitle("Completed Order")
-                            .setMessage("Are you sure you want to mark this order as complete?")
+                    if(activeOrder.getOrderStatus().equals(ORDER_STATUS_ACTIVE)){
+                        new AlertDialog.Builder(ChatActivity.this)
+                                .setTitle("Completed Order")
+                                .setMessage("Are you sure you want to mark this order as complete?")
 
-                            // Specifying a listener allows you to take an action before dismissing the dialog.
-                            // The dialog is automatically dismissed when a dialog button is clicked.
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    MarkOrderAsCompleted();
-                                }
-                            })
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        MarkOrderAsCompleted();
+                                    }
+                                })
 
-                            // A null listener allows the button to dismiss the dialog and take no further action.
-                            .setNegativeButton(android.R.string.no, null)
-                            .show();
+                                .setNegativeButton(android.R.string.no, null)
+                                .show();
+                    }
+                    else {
+                        finish();
+                        Intent intent = new Intent(ChatActivity.this, CompleteOrderActivity.class);
+                        intent.putExtra("activeOrder", activeOrder);
+                        startActivity(intent);
+                    }
+
+
                 }
             });
         }
         orderId = activeOrder.getOrderId();
 
-        intiViews();
+
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         senderId = firebaseUser.getUid();
@@ -197,12 +226,34 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+
+    void setupHeaderTitle(){
+        if(activeOrder.getOrderStatus().equals(ORDER_STATUS_ACTIVE)){
+            textViewHeaderTitle.setText("Order status: Active");
+        }
+        else if(activeOrder.getOrderStatus().equals(ORDER_STATUS_COMPLETE)){
+            textViewHeaderTitle.setText("Order status: Completed");
+            if(activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PENDING)){
+                textViewHeaderTitle.setText("Payment status: Pending");
+            }
+            else if(activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PAID)){
+                textViewHeaderTitle.setText("Payment status: Paid");
+                if(activeOrder.getRateAndReviewStatus().equals(RAR_STATUS_NOT_RATED)){
+                    textViewHeaderTitle.setText("Rating status: Not rated yet");
+                }
+                else if(activeOrder.getRateAndReviewStatus().equals(RAR_STATUS_RATED)){
+                    textViewHeaderTitle.setText("Rating status: Rated");
+                }
+            }
+        }
+    }
     private void intiViews() {
         buttonGallery = findViewById(R.id.buttonChatPickImage);
         buttonSend = findViewById(R.id.buttonSend);
         progressBar = findViewById(R.id.progressBarChat);
         editTextMessage = findViewById(R.id.editTextMessage);
         recyclerView = findViewById(R.id.recyclerViewChat);
+        textViewHeaderTitle = findViewById(R.id.textViewHeaderTitle);
     }
 
 

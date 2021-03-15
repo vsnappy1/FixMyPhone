@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vaaq.fixmyphone.Adapters.QuoteAdapter;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.VendorActivities.DashboardVendorActivity;
 import com.vaaq.fixmyphone.models.ActiveOrder;
 import com.vaaq.fixmyphone.models.Quote;
 import com.vaaq.fixmyphone.utils.Constant;
@@ -50,6 +53,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     TextView textViewQuote;
     EditText editTextAddress;
     TextView textViewPickupDate;
+    TextView textViewPickupTimeFrom;
+    TextView textViewPickupTimeTo;
     Button buttonConfirm;
 
     Calendar cal = Calendar.getInstance();
@@ -57,6 +62,9 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     private String TAG = "Firebase";
 
     DialogHelper dialogHelper;
+
+    int selectedHourFrom;
+    int selectedMinuteFrom;
 
 
     @Override
@@ -67,6 +75,17 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         headerSetup();
 
         initViews();
+
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        selectedHourFrom = 12;
+        selectedMinuteFrom = 0;
+        textViewPickupTimeFrom.setText("12:00 PM");
+        textViewPickupTimeTo.setText("6:00 PM");
+
+
+
 
         dialogHelper = new DialogHelper(this);
 
@@ -104,11 +123,92 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             }
         });
 
+        textViewPickupTimeFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(OrderConfirmationActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String AM_PM ;
+                        if(selectedHour < 12) {
+                            AM_PM = "AM";
+                        } else {
+                            AM_PM = "PM";
+                            if(selectedHour > 12){
+                                selectedHour -= 12;
+                            }
+                        }
+
+                        if(selectedMinute / 10 == 0){
+                            textViewPickupTimeFrom.setText( selectedHour + ":0" + selectedMinute+" "+AM_PM);
+                        }else {
+                            textViewPickupTimeFrom.setText( selectedHour + ":" + selectedMinute+" "+AM_PM);
+                        }
+                    }
+                }, hour, minute, false);//Yes 12 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        textViewPickupTimeTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(OrderConfirmationActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                        if(selectedHour < selectedHourFrom){
+                            Toast.makeText(OrderConfirmationActivity.this, "Pickup to time must be greater then from time", Toast.LENGTH_SHORT).show();
+                            return;
+                        }else if(selectedHour == selectedHourFrom && selectedMinute< selectedMinuteFrom){
+                            Toast.makeText(OrderConfirmationActivity.this, "Pickup to time must be greater then from time", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String AM_PM ;
+                        if(selectedHour < 12) {
+                            AM_PM = "AM";
+                        } else {
+                            AM_PM = "PM";
+                            if(selectedHour > 12){
+                                selectedHour -= 12;
+                            }
+                        }
+
+                        if(selectedMinute / 10 == 0){
+                            textViewPickupTimeTo.setText( selectedHour + ":0" + selectedMinute+" "+AM_PM);
+                        }else {
+                            textViewPickupTimeTo.setText( selectedHour + ":" + selectedMinute+" "+AM_PM);
+                        }
+                    }
+                }, hour, minute, false);//Yes 12 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogHelper.showProgressDialog("Creating an order...");
-                deleteGetQuoteRequest();
+                String from = getIntent().getStringExtra("from");
+                if(VENDOR.equals(from)){
+                    Intent intent = new Intent(getApplicationContext(), DashboardVendorActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else {
+                    dialogHelper.showProgressDialog("Creating an order...");
+                    deleteGetQuoteRequest();
+                }
+
             }
         });
     }
@@ -243,6 +343,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         textViewQuote = findViewById(R.id.textViewOrderConfirmationQuote);
         editTextAddress = findViewById(R.id.editTextOrderConfirmationAddress);
         textViewPickupDate = findViewById(R.id.textViewOrderConfirmationPickupDate);
+        textViewPickupTimeFrom  = findViewById(R.id.textViewOrderConfirmationPickupTimeFrom);
+        textViewPickupTimeTo  = findViewById(R.id.textViewOrderConfirmationPickupTimeTo);
         buttonConfirm = findViewById(R.id.buttonOrderConfirmationConfirm);
     }
 

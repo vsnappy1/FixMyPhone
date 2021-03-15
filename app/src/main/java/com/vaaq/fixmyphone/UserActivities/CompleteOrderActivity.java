@@ -43,6 +43,8 @@ import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
 import static com.vaaq.fixmyphone.utils.Constant.COMPLETED_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.COMPLETED_ORDER_IDS;
+import static com.vaaq.fixmyphone.utils.Constant.PAYMENT_STATUS_PAID;
+import static com.vaaq.fixmyphone.utils.Constant.RAR_STATUS_RATED;
 import static com.vaaq.fixmyphone.utils.Constant.REVIEW;
 import static com.vaaq.fixmyphone.utils.Constant.USER;
 import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
@@ -92,6 +94,14 @@ public class CompleteOrderActivity extends AppCompatActivity {
         Intent intent = getIntent();
         activeOrder = (ActiveOrder)intent.getSerializableExtra("activeOrder");
 
+        if(activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PAID)){
+            buttonMakePayment.setEnabled(false);
+        }
+
+        if(activeOrder.getRateAndReviewStatus().equals(RAR_STATUS_RATED)){
+            buttonRateReviewVendor.setEnabled(false);
+        }
+
         buttonMakePayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,8 +146,6 @@ public class CompleteOrderActivity extends AppCompatActivity {
                         Log.i(TAG, "Signup DB Failure");
                         dialogHelper.hideProgressDialog();
                         Toast.makeText(CompleteOrderActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
-
-
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -1,8 +1,16 @@
 package com.vaaq.fixmyphone.utils;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class NetworkHelper {
 
@@ -32,4 +40,7 @@ public class NetworkHelper {
     public interface OnResponse {
         void response(String result);
     }
+
+
+
 }
