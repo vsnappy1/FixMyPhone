@@ -80,6 +80,20 @@
                 android:text="abc" />
 
             <EditText
+                android:id="@+id/editTextSignupUserEmail2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/rounded_corner_edittext"
+                android:backgroundTint="@color/edittext_color"
+                android:ems="10"
+                android:hint="IBAN#"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:text="PKHABB0016285491873" />
+
+            <EditText
                 android:id="@+id/editTextSignupVendorEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

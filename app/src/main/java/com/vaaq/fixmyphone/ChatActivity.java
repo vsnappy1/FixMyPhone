@@ -84,8 +84,8 @@ public class ChatActivity extends AppCompatActivity {
     // Path Of selected image
     private Uri filePath = null;
 
-    Button buttonGallery;
-    Button buttonSend;
+    ImageView buttonGallery;
+    ImageView buttonSend;
     ProgressBar progressBar;
     EditText editTextMessage;
     RecyclerView recyclerView;

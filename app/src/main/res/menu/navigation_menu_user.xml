@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <item android:id="@+id/actionGetQuote"
+       android:icon="@drawable/ic_arrow_back"
+       android:title="Get Quote"/>
+
+    <item android:id="@+id/actionQuotes"
+        android:icon="@drawable/ic_arrow_back"
+        android:title="Quotes"/>
+
+    <item android:id="@+id/actionLogout"
+        android:icon="@drawable/ic_arrow_back"
+        android:title="Logout"/>
+
+</menu>

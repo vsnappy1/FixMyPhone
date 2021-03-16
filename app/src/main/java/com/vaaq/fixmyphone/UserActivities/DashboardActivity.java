@@ -2,14 +2,25 @@ package com.vaaq.fixmyphone.UserActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,20 +34,18 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.USER;
-import static com.vaaq.fixmyphone.utils.Constant.VENDOR;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    ImageView imageViewEdit;
-    TextView  textViewUsername;
-    TextView  textViewUserAddress;
-    Button    buttonGetQuote;
-    Button    buttonActiveOrder;
-    Button    buttonCompletedOrder;
-    Button    buttonQuotes;
-
     public static String address;
     public static String userName;
+
+    private DrawerLayout drawer;
+    private NavigationView nv;
+
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    FragmentAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,55 +55,49 @@ public class DashboardActivity extends AppCompatActivity {
         headerSetup();
 
         initViews();
+        drawer = findViewById(R.id.dashboard_user);
+        tabLayout = findViewById(R.id.tabLayout2);
+        viewPager = findViewById(R.id.viewPager);
 
-        imageViewEdit.setOnClickListener(new View.OnClickListener() {
+        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), 2);
+        viewPager.setAdapter(fragmentAdapter);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
+
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), UserProfileActivity.class));
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.actionGetQuote:
+                        startActivity(new Intent(getApplicationContext(), GetQuoteActivity.class));
+                        return true;
+                    case R.id.actionQuotes:
+                        startActivity(new Intent(getApplicationContext(), QuotesActivity.class));
+                        return true;
+                    case R.id.actionLogout:
+                        Toast.makeText(DashboardActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    default:
+                        return true;
+                }
             }
         });
 
-        buttonGetQuote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), GetQuoteActivity.class ));
-            }
-        });
 
-        buttonActiveOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ActiveOrderActivity.class ));
-            }
-        });
-
-        buttonCompletedOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CompletedOrderActivity.class));
-            }
-        });
-
-        buttonQuotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), QuotesActivity.class ));
-            }
-        });
         fetchUserDetails();
     }
 
-    void initViews(){
-        imageViewEdit = findViewById(R.id.imageViewDashboardEdit);
-        textViewUsername = findViewById(R.id.textViewDashboardName);
-        textViewUserAddress = findViewById(R.id.textViewDashboardAddress);
-        buttonGetQuote = findViewById(R.id.buttonDashboardGetQuote);
-        buttonActiveOrder = findViewById(R.id.buttonDashboardActiveOrder);
-        buttonCompletedOrder = findViewById(R.id.buttonDashboardCompletedOrder);
-        buttonQuotes = findViewById(R.id.buttonDashboardQuotes);
+
+    void initViews() {
+
     }
 
-    void fetchUserDetails(){
+    void fetchUserDetails() {
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -123,12 +126,87 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    void headerSetup(){
+    void headerSetup() {
         TextView textView = findViewById(R.id.textViewHeaderTitle);
         ImageView imageView = findViewById(R.id.imageViewBack);
-        imageView.setVisibility(View.GONE   );
-
+        imageView.setImageResource(R.drawable.ic_menu);
         textView.setText("Dashboard");
-        imageView.setOnClickListener(v -> onBackPressed());
+        imageView.setOnClickListener(v -> {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                // close
+                drawer.closeDrawers();
+            } else {
+                // open
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    class FragmentAdapter extends FragmentStatePagerAdapter {
+
+        int pageCount;
+
+        public FragmentAdapter(FragmentManager fm, int pageCount) {
+            super(fm);
+            this.pageCount = pageCount;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new ActiveOrderUserFragment();
+                case 1:
+                    return new CompletedOrderUserFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return pageCount;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Active Orders";
+                case 1:
+                    return "Completed Orders";
+                default:
+                    return "";
+            }
+        }
+    }
+
+
+    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+        public ScreenSlidePagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
+
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position) {
+                case 0:
+                    return new ActiveOrderUserFragment();
+                case 1:
+                    return new CompletedOrderUserFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 }
