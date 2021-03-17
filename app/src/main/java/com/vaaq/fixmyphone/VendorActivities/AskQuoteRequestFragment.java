@@ -1,19 +1,17 @@
 package com.vaaq.fixmyphone.VendorActivities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Pair;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,15 +23,58 @@ import com.vaaq.fixmyphone.Adapters.AskQuoteRequestAdapter;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.GetQuote;
 import com.vaaq.fixmyphone.utils.DialogHelper;
-import com.vaaq.fixmyphone.utils.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.GET_QUOTE;
 
-public class AskQuoteRequestsActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AskQuoteRequestFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AskQuoteRequestFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public AskQuoteRequestFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AskQuoteRequestFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AskQuoteRequestFragment newInstance(String param1, String param2) {
+        AskQuoteRequestFragment fragment = new AskQuoteRequestFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
     RecyclerView recyclerView;
     AskQuoteRequestAdapter adapter;
@@ -43,40 +84,43 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
     DatabaseReference firebaseDatabaseReference;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ask_quote_requests_screen);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        headerSetup();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_ask_quote_request, container, false);
 
-        initViews();
+        initViews(view);
 
-        dialogHelper = new DialogHelper(AskQuoteRequestsActivity.this);
+        dialogHelper = new DialogHelper(getContext());
 
         list = new ArrayList<>();
-        adapter = new AskQuoteRequestAdapter(list, AskQuoteRequestsActivity.this, getParent());
+        adapter = new AskQuoteRequestAdapter(list, getContext(), getActivity());
         adapter.setOnItemClickListener(new AskQuoteRequestAdapter.ClickListener() {
             @Override
             public void onClick(View itemView, int position) {
-                Toast.makeText(AskQuoteRequestsActivity.this, list.get(position).getDescription(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), list.get(position).getDescription(), Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(AskQuoteRequestsActivity.this, SubmitQuoteActivity.class);
+                Intent intent = new Intent(getContext(), SubmitQuoteActivity.class);
                 intent.putExtra("quoteRequest", list.get(position));
                 startActivity(intent);
 
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
         firebaseDatabaseReference = FirebaseDatabase.getInstance().getReference().child(GET_QUOTE);
 
         fetchGetQuoteRequests();
+    
+    
+        return view;
     }
 
-    private void initViews() {
-        recyclerView = findViewById(R.id.recyclerViewAskQuoteRequests);
+
+    private void initViews(View view) {
+        recyclerView = view.findViewById(R.id.recyclerViewAskQuoteRequests);
     }
 
     void fetchGetQuoteRequests(){
@@ -98,7 +142,7 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
         firebaseDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    class ParseMapTask extends AsyncTask<DataSnapshot, Void, ArrayList<GetQuote>>{
+    class ParseMapTask extends AsyncTask<DataSnapshot, Void, ArrayList<GetQuote>> {
 
         @Override
         protected ArrayList<GetQuote> doInBackground(DataSnapshot... dataSnapshots) {
@@ -146,7 +190,7 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
             dialogHelper.hideProgressDialog();
 
             if(getQuotes == null){
-                Toast.makeText(AskQuoteRequestsActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Some error occurred", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(getQuotes.size() > 0){
@@ -155,18 +199,11 @@ public class AskQuoteRequestsActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
             else {
-                Toast.makeText(AskQuoteRequestsActivity.this, "No requests", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "No requests", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
 
-    void headerSetup(){
-        TextView textView = findViewById(R.id.textViewHeaderTitle);
-        ImageView imageView = findViewById(R.id.imageViewBack);
-
-        textView.setText("Requests");
-        imageView.setOnClickListener(v -> onBackPressed());
-    }
 }

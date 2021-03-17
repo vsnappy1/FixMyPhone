@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.GetQuote;
 import com.vaaq.fixmyphone.models.Quote;
+import com.vaaq.fixmyphone.utils.FormatDateAndTime;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ResponseAdapter extends RecyclerView.Adapter<ResponseAdapter.ResponseHolder> {
 
@@ -63,11 +66,9 @@ public class ResponseAdapter extends RecyclerView.Adapter<ResponseAdapter.Respon
 
         Quote getQuote = list.get(position);
         holder.textViewShopName.setText(getQuote.getShopName());
-        holder.textViewQuote.setText(getQuote.getQuote());
+        holder.textViewQuote.setText("Rs. "+NumberFormat.getNumberInstance(Locale.US).format(Long.parseLong(getQuote.getQuote())));
         holder.textViewDescription.setText(getQuote.getMessage());
-
-        Date date = new Date(getQuote.getTime());
-        holder.textViewTime.setText(date.toString());
+        holder.textViewTime.setText(new FormatDateAndTime().getFormattedDate(getQuote.getTime()));
 
     }
 

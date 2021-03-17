@@ -29,7 +29,6 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.QuoteHolder>
     }
 
     public class QuoteHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textViewName;
         TextView textViewBrand;
         TextView textViewModel;
         TextView textViewDescription;
@@ -38,7 +37,6 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.QuoteHolder>
         public QuoteHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            textViewName = itemView.findViewById(R.id.textViewItemQuoteUsername);
             textViewBrand = itemView.findViewById(R.id.textViewItemQuoteBrand);
             textViewModel = itemView.findViewById(R.id.textViewItemQuoteModel);
             textViewDescription = itemView.findViewById(R.id.textViewItemQuoteDescription);
@@ -62,7 +60,6 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.QuoteHolder>
     public void onBindViewHolder(@NonNull QuoteHolder holder, int position) {
 
         GetQuote getQuote = list.get(position);
-        holder.textViewName.setText(getQuote.getName());
         holder.textViewBrand.setText(getQuote.getBrand());
         holder.textViewModel.setText(getQuote.getModel());
         holder.textViewDescription.setText(getQuote.getDescription());

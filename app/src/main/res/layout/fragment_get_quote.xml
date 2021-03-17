@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserActivities.GetQuoteFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Brand"
+            android:textColor="@color/dark_grey" />
+
+        <Spinner
+            android:id="@+id/spinnerGetQuoteBrand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner_edittext2"
+            android:ems="10"
+            android:entries="@array/gender"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:popupBackground="@drawable/rounded_corner_spinner"
+            android:textColor="@color/dark_grey"
+            android:textColorHint="#636363"
+            android:theme="@style/mySpinnerItemStyle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Model"
+            android:textColor="@color/dark_grey" />
+
+        <EditText
+            android:id="@+id/editTextGetQuoteModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner_edittext2"
+            android:ems="10"
+            android:hint="e.g. Galaxy S20"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:textColor="@color/dark_grey"
+            android:textColorHint="#636363" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Description"
+            android:textColor="@color/dark_grey" />
+
+        <EditText
+            android:id="@+id/editTextGetQuoteDescription"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_weight="0"
+            android:background="@drawable/rounded_corner_edittext2"
+            android:ems="10"
+            android:gravity="top|left"
+            android:hint="e.g. My phone screen is broken, how much it will cost?"
+            android:inputType="textMultiLine|textPersonName"
+            android:padding="16dp"
+            android:textColor="@color/dark_grey"
+            android:textColorHint="#636363" />
+
+        <Button
+            android:id="@+id/buttonGetQuoteSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_corner_edittext2"
+            android:backgroundTint="@color/dark_grey"
+            android:padding="10dp"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:textColor="@color/Black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</FrameLayout>

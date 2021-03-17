@@ -94,7 +94,7 @@
         android:background="@drawable/rounded_corner_review_button"
         android:text="Share Experience"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/editTextShareExperience"
         app:layout_constraintStart_toStartOf="@+id/editTextShareExperience"

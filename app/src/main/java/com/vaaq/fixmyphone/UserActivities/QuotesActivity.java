@@ -67,18 +67,6 @@ public class QuotesActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new QuoteAdapter.ClickListener() {
             @Override
             public void onClick(View itemView, int position) {
-                Toast.makeText(QuotesActivity.this, list.get(position).getDescription(), Toast.LENGTH_SHORT).show();
-
-//                TextView textViewName = itemView.findViewById(R.id.textViewItemAskQuoteUsername);
-//                TextView textViewBrand = itemView.findViewById(R.id.textViewItemAskQuoteBrand);
-//                TextView textViewModel = itemView.findViewById(R.id.textViewItemAskQuoteModel);
-//                TextView textViewDescription = itemView.findViewById(R.id.textViewItemAskQuoteDescription);
-//                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getParent(),
-//                        Pair.create(textViewName, ViewCompat.getTransitionName(textViewName)),
-//                        Pair.create(textViewBrand, ViewCompat.getTransitionName(textViewBrand)),
-//                        Pair.create(textViewModel, ViewCompat.getTransitionName(textViewModel)),
-//                        Pair.create(textViewDescription, ViewCompat.getTransitionName(textViewDescription)));
-
 
                 brand = list.get(position).getBrand();
                 model = list.get(position).getModel();

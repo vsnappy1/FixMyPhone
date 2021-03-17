@@ -2,15 +2,25 @@ package com.vaaq.fixmyphone.VendorActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +29,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.UserActivities.ActiveOrderUserFragment;
+import com.vaaq.fixmyphone.UserActivities.CompletedOrderActivity;
+import com.vaaq.fixmyphone.UserActivities.DashboardActivity;
+import com.vaaq.fixmyphone.UserActivities.GetQuoteFragment;
+import com.vaaq.fixmyphone.UserActivities.QuotesActivity;
 import com.vaaq.fixmyphone.UserActivities.ResponsesActivity;
 import com.vaaq.fixmyphone.UserActivities.VendorProfileActivity;
 
@@ -31,67 +46,56 @@ public class DashboardVendorActivity extends AppCompatActivity {
 
     public static String SHOP_NAME = "ABC";
 
-    ImageView imageViewProfile;
-    ImageView imageViewEdit;
-    TextView textViewUsername;
-    TextView textViewUserAddress;
-    Button buttonAskQuoteRequest;
-    Button buttonActiveOrder;
-    Button buttonCompletedOrder;
+    private DrawerLayout drawer;
+    private NavigationView nv;
+
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    FragmentAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_vendor);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
         headerSetup();
 
-        initViews();
+        drawer = findViewById(R.id.dashboard_user);
+        tabLayout = findViewById(R.id.tabLayout2);
+        viewPager = findViewById(R.id.viewPager);
 
-        buttonAskQuoteRequest.setOnClickListener(new View.OnClickListener() {
+        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), 2);
+        viewPager.setAdapter(fragmentAdapter);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        nv = findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashboardVendorActivity.this, AskQuoteRequestsActivity.class));
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.actionCompletedOrder:
+                        startActivity(new Intent(getApplicationContext(), CompletedOrderVendorActivity.class));
+                        return true;
+                    case R.id.actionLogout:
+                        Toast.makeText(DashboardVendorActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    default:
+                        return true;
+                }
             }
         });
 
-        buttonActiveOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashboardVendorActivity.this, ActiveOrderVendorActivity.class));
-            }
-        });
-
-        buttonCompletedOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DashboardVendorActivity.this, CompletedOrderVendorActivity.class));
-            }
-        });
-
-        imageViewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(DashboardVendorActivity.this, VendorProfileActivity.class);
-                intent1.putExtra("vendorId",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                intent1.putExtra("from", VENDOR);
-                startActivity(intent1);
-            }
-        });
 
         fetchVendorDetails();
 
     }
 
-    void initViews() {
-        imageViewProfile = findViewById(R.id.imageViewProfile);
-        imageViewEdit = findViewById(R.id.imageViewDashboardVendorEdit);
-        textViewUsername = findViewById(R.id.textViewDashboardVendorName);
-        textViewUserAddress = findViewById(R.id.textViewDashboardVendorAddress);
-        buttonAskQuoteRequest = findViewById(R.id.buttonDashboardVendorAskQuote);
-        buttonActiveOrder = findViewById(R.id.buttonDashboardVendorActiveOrder);
-        buttonCompletedOrder = findViewById(R.id.buttonDashboardVendorCompletedOrder);
-    }
 
     void fetchVendorDetails() {
 
@@ -122,11 +126,63 @@ public class DashboardVendorActivity extends AppCompatActivity {
     }
 
 
-    void headerSetup(){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    class FragmentAdapter extends FragmentStatePagerAdapter {
+
+        int pageCount;
+
+        public FragmentAdapter(FragmentManager fm, int pageCount) {
+            super(fm);
+            this.pageCount = pageCount;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new ActiveOrderVendorFragment();
+                case 1:
+                    return new AskQuoteRequestFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return pageCount;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Active Orders";
+                case 1:
+                    return "Ask Quote Requests";
+                default:
+                    return "";
+            }
+        }
+    }
+
+    void headerSetup() {
         TextView textView = findViewById(R.id.textViewHeaderTitle);
         ImageView imageView = findViewById(R.id.imageViewBack);
-
+        imageView.setImageResource(R.drawable.ic_menu);
         textView.setText("Dashboard");
-        imageView.setOnClickListener(v -> onBackPressed());
+        imageView.setOnClickListener(v -> {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                // close
+                drawer.closeDrawers();
+            } else {
+                // open
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
     }
 }

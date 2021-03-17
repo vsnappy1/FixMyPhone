@@ -30,7 +30,8 @@
         <activity android:name=".UserActivities.CompletedOrderActivity" />
         <activity android:name=".UserActivities.ActiveOrderActivity" />
         <activity android:name=".UserActivities.GetQuoteActivity" />
-        <activity android:name=".UserActivities.DashboardActivity" />
+        <activity android:name=".UserActivities.DashboardActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".VendorActivities.VendorSignupActivity" />
         <activity android:name=".VendorActivities.VendorLoginActivity" />
         <activity android:name=".UserActivities.UserSignupActivity" />

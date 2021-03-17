@@ -160,7 +160,6 @@ public class ChatActivity extends AppCompatActivity {
                                 .show();
                     }
                     else {
-                        finish();
                         Intent intent = new Intent(ChatActivity.this, CompleteOrderActivity.class);
                         intent.putExtra("activeOrder", activeOrder);
                         startActivity(intent);

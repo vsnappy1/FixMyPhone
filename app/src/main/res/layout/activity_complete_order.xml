@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Black"
     tools:context=".UserActivities.CompleteOrderActivity">
 
     <include
@@ -30,7 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner_button"
-            android:text="Make Payment" />
+            android:text="Make Payment"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/buttonRateAndReviewVendor"
@@ -38,7 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner_button"
-            android:text="Rate and Review Vendor" />
+            android:text="Rate and Review Vendor"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

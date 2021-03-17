@@ -8,7 +8,6 @@
     android:layout_marginEnd="8dp"
     android:background="@drawable/rounded_corner_item_background"
     android:backgroundTint="#F1F1F1"
-    android:elevation="5dp"
     android:padding="8dp">
 
     <LinearLayout
@@ -31,91 +30,41 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Madina Communications"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:transitionName="transitionName_username" />
 
             <TextView
-                android:id="@+id/textViewItemResponseResponseCount"
+                android:id="@+id/textViewItemResponseQuote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:layout_weight="0"
-                android:gravity="right"
-                android:textSize="18sp"
-                android:transitionName="transitionName_username" />
+                android:text="5050"
+                android:textColor="#26A69A"
+                android:textSize="20sp"
+                android:transitionName="transitionName_brand" />
+
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textViewItemResponseDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:text="My phone's screen is broken, how much it will cost?"
+            android:transitionName="transitionName_description" />
+
+        <TextView
+            android:id="@+id/textViewItemResponseTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="0"
-                    android:text="Quote: " />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="0"
-                    android:text="Time:" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="0"
-                    android:text="Description: " />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textViewItemResponseQuote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="1"
-                    android:text="5050"
-                    android:transitionName="transitionName_brand"/>
-
-                <TextView
-                    android:id="@+id/textViewItemResponseTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="1"
-                    android:text="4 hours ago"
-                    android:transitionName="transitionName_model"/>
-
-                <TextView
-                    android:id="@+id/textViewItemResponseDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="1"
-                    android:text="My phone's screen is broken, how much it will cost?"
-                    android:transitionName="transitionName_description"/>
-            </LinearLayout>
-
-        </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="4 hours ago"
+            android:transitionName="transitionName_model" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

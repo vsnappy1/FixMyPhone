@@ -65,6 +65,8 @@ public class DashboardActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
 
+
+
 //        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -72,8 +74,8 @@ public class DashboardActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.actionGetQuote:
-                        startActivity(new Intent(getApplicationContext(), GetQuoteActivity.class));
+                    case R.id.actionCompletedOrder:
+                        startActivity(new Intent(getApplicationContext(), CompletedOrderActivity.class));
                         return true;
                     case R.id.actionQuotes:
                         startActivity(new Intent(getApplicationContext(), QuotesActivity.class));
@@ -162,7 +164,7 @@ public class DashboardActivity extends AppCompatActivity {
                 case 0:
                     return new ActiveOrderUserFragment();
                 case 1:
-                    return new CompletedOrderUserFragment();
+                    return new GetQuoteFragment();
                 default:
                     return null;
             }
@@ -179,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity {
                 case 0:
                     return "Active Orders";
                 case 1:
-                    return "Completed Orders";
+                    return "Get Quote";
                 default:
                     return "";
             }
@@ -187,26 +189,4 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
-        public ScreenSlidePagerAdapter(FragmentActivity fa) {
-            super(fa);
-        }
-
-        @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                    return new ActiveOrderUserFragment();
-                case 1:
-                    return new CompletedOrderUserFragment();
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return 2;
-        }
-    }
 }

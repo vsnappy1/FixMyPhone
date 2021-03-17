@@ -27,9 +27,10 @@
             android:id="@+id/tabLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-
-            app:layout_constraintTop_toBottomOf="@+id/include2"/>
+            android:background="@color/Black"
+            app:layout_constraintTop_toBottomOf="@+id/include2"
+            app:tabTextAppearance="@style/TabWidget"
+            app:tabTextColor="@color/TextWhite" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"

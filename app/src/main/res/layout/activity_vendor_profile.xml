@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Black"
     tools:context=".UserActivities.VendorProfileActivity">
 
     <Button
@@ -15,6 +16,8 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_corner_button"
         android:text="Proceed"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -43,6 +46,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="TextView"
+            android:textColor="@color/TextWhite"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -52,6 +56,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="TextView"
+            android:textColor="@color/TextWhite"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -60,12 +65,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/TextWhite" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewVendorProfile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_corner_item_background"
+            android:backgroundTint="#99D3D6DD"
+            android:elevation="5dp" />
 
     </LinearLayout>
 
