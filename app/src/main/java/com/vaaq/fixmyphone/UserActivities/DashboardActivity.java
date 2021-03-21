@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.vaaq.fixmyphone.R;
 
 import java.util.HashMap;
@@ -200,26 +201,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    private Task<String> stripePayment(int amount) {
-        // Create the arguments to the callable function.
-        Map<String, Object> data = new HashMap<>();
-        data.put("amount", amount*100);
 
-        return mFunctions
-                .getHttpsCallable("stripePayment")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        String result = (String) task.getResult().getData();
-                        Log.i("THOO", result);
-                        return result;
-                    }
-                });
-    }
 
 
 }

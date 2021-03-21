@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.vaaq.fixmyphone.R;
+import com.vaaq.fixmyphone.Services.MyFirebaseMessagingService;
 import com.vaaq.fixmyphone.UserActivities.ActiveOrderUserFragment;
 import com.vaaq.fixmyphone.UserActivities.CompletedOrderActivity;
 import com.vaaq.fixmyphone.UserActivities.DashboardActivity;
@@ -93,7 +97,7 @@ public class DashboardVendorActivity extends AppCompatActivity {
 
 
         fetchVendorDetails();
-
+        fetchFCMToken();
     }
 
 
@@ -184,5 +188,26 @@ public class DashboardVendorActivity extends AppCompatActivity {
                 drawer.openDrawer(GravityCompat.START);
             }
         });
+    }
+
+    public void fetchFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAGG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        MyFirebaseMessagingService.updateToken(token);
+
+                        // Log and toast
+                        Log.d("TAGG", token);
+//                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
