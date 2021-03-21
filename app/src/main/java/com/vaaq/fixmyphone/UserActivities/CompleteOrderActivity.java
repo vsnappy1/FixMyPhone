@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +33,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentIntentResult;
@@ -46,10 +50,15 @@ import com.vaaq.fixmyphone.models.RateAndReview;
 import com.vaaq.fixmyphone.utils.Constant;
 import com.vaaq.fixmyphone.utils.DialogHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER;
@@ -57,6 +66,7 @@ import static com.vaaq.fixmyphone.utils.Constant.ACTIVE_ORDER_IDS;
 import static com.vaaq.fixmyphone.utils.Constant.COMPLETED_ORDER;
 import static com.vaaq.fixmyphone.utils.Constant.COMPLETED_ORDER_IDS;
 import static com.vaaq.fixmyphone.utils.Constant.PAYMENT_STATUS_PAID;
+import static com.vaaq.fixmyphone.utils.Constant.PAYMENT_STATUS_PENDING;
 import static com.vaaq.fixmyphone.utils.Constant.RAR_STATUS_RATED;
 import static com.vaaq.fixmyphone.utils.Constant.REVIEW;
 import static com.vaaq.fixmyphone.utils.Constant.USER;
@@ -66,6 +76,8 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
 
     private static final String TAG = "YOYO";
+    private FirebaseFunctions mFunctions;
+
 
     Button buttonMakePayment;
     Button buttonRateReviewVendor;
@@ -98,6 +110,8 @@ public class CompleteOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_order);
+        mFunctions = FirebaseFunctions.getInstance();
+
         PaymentConfiguration.init(
                 getApplicationContext(),
                 "pk_test_51IVMDOACLamgLPNi3q8dOHhoCJx6okZXU7VSs1XfRq0jFGmE7xSc9SCbxGPNFzJizE0dMjyQbzjZqxAnedVkcXiO00k2Q0A8nC"
@@ -113,42 +127,43 @@ public class CompleteOrderActivity extends AppCompatActivity {
         initViews();
 
         Intent intent = getIntent();
-        activeOrder = (ActiveOrder)intent.getSerializableExtra("activeOrder");
+        activeOrder = (ActiveOrder) intent.getSerializableExtra("activeOrder");
 
-        if(activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PAID)){
-            buttonMakePayment.setEnabled(false);
-        }
-
-        if(activeOrder.getRateAndReviewStatus().equals(RAR_STATUS_RATED)){
-            buttonRateReviewVendor.setEnabled(false);
-        }
 
         buttonMakePayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //change payment status
-                showPaymentDialog();
+                if (activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PENDING)) {
+                    showPaymentDialog();
+                }
+                else {
+                    Toast.makeText(CompleteOrderActivity.this, "You have already made the payment", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         buttonRateReviewVendor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showRateAndReviewVendorDialog();
+
+                if (activeOrder.getPaymentStatus().equals(PAYMENT_STATUS_PAID)) {
+                    showRateAndReviewVendorDialog();
+                }else {
+                    Toast.makeText(CompleteOrderActivity.this, "Kindly make Payment first", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-
     }
 
-    void initViews(){
+    void initViews() {
         buttonMakePayment = findViewById(R.id.buttonMakePayment);
         buttonRateReviewVendor = findViewById(R.id.buttonRateAndReviewVendor);
     }
 
-    void makePayment(){
+    void makePayment() {
 
-        dialogHelper.showProgressDialog("Making payment");
 
         FirebaseDatabase.getInstance().getReference().child(ACTIVE_ORDER).child(activeOrder.getOrderId()).child("paymentStatus").setValue(Constant.PAYMENT_STATUS_PAID)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -156,9 +171,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "Signup DB Success");
                         dialogHelper.hideProgressDialog();
-                        Toast.makeText(CompleteOrderActivity.this, "Payment Made", Toast.LENGTH_SHORT).show();
-
-
+                        activeOrder.setPaymentStatus(PAYMENT_STATUS_PAID);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -166,7 +179,6 @@ public class CompleteOrderActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.i(TAG, "Signup DB Failure");
                         dialogHelper.hideProgressDialog();
-                        Toast.makeText(CompleteOrderActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -190,9 +202,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
     }
 
-    void updateRateReviewStatusInOrder(){
-
-        dialogHelper.showProgressDialog("Wait");
+    void updateRateReviewStatusInOrder() {
 
         FirebaseDatabase.getInstance().getReference().child(ACTIVE_ORDER).child(activeOrder.getOrderId()).child("rateAndReviewStatus").setValue(Constant.RAR_STATUS_RATED)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -201,6 +211,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
                         Log.i(TAG, "Signup DB Success");
                         dialogHelper.hideProgressDialog();
                         dialogHelper.showProgressDialog("Adding review");
+                        activeOrder.setRateAndReviewStatus(RAR_STATUS_RATED);
                         addReview();
                     }
                 })
@@ -235,9 +246,9 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
     }
 
-    void addReview(){
+    void addReview() {
         String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        RateAndReview rateAndReview = new RateAndReview(userName,review, starCount, new Date().getTime());
+        RateAndReview rateAndReview = new RateAndReview(userName, review, starCount, new Date().getTime());
 
         FirebaseDatabase.getInstance().getReference().child(REVIEW).child(activeOrder.getVendorId()).push().setValue(rateAndReview)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -278,7 +289,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
                 });
     }
 
-    void moveFromActiveOrderToCompleteOrder(){
+    void moveFromActiveOrderToCompleteOrder() {
         final DatabaseReference from = FirebaseDatabase.getInstance().getReference().child(ACTIVE_ORDER).child(activeOrder.getOrderId());
         final DatabaseReference to = FirebaseDatabase.getInstance().getReference().child(COMPLETED_ORDER).child(activeOrder.getOrderId());
 
@@ -288,15 +299,14 @@ public class CompleteOrderActivity extends AppCompatActivity {
                 to.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                        if(databaseError == null){
+                        if (databaseError == null) {
                             from.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     deleteActiveOrderIdAndAddCompletedOrderId();
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             Toast.makeText(CompleteOrderActivity.this, "Network Issue", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -310,7 +320,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
         });
     }
 
-    void deleteActiveOrderIdAndAddCompletedOrderId(){
+    void deleteActiveOrderIdAndAddCompletedOrderId() {
 
         final DatabaseReference user = FirebaseDatabase.getInstance().getReference().child(USER);
         final DatabaseReference vendor = FirebaseDatabase.getInstance().getReference().child(VENDOR);
@@ -336,8 +346,8 @@ public class CompleteOrderActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    if(Objects.requireNonNull(ds.getValue()).toString().equals(activeOrder.getOrderId())){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (Objects.requireNonNull(ds.getValue()).toString().equals(activeOrder.getOrderId())) {
                         user.child(activeOrder.getUserId()).child(ACTIVE_ORDER_IDS).child(Objects.requireNonNull(ds.getKey())).removeValue();
                         isRemovedFromUser = true;
                         break;
@@ -355,8 +365,8 @@ public class CompleteOrderActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    if(Objects.requireNonNull(ds.getValue()).toString().equals(activeOrder.getOrderId())){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (Objects.requireNonNull(ds.getValue()).toString().equals(activeOrder.getOrderId())) {
                         vendor.child(activeOrder.getVendorId()).child(ACTIVE_ORDER_IDS).child(Objects.requireNonNull(ds.getKey())).removeValue();
                         isRemovedFromUser = true;
                         break;
@@ -372,19 +382,19 @@ public class CompleteOrderActivity extends AppCompatActivity {
         });
     }
 
-    void checkAllOperationsDone(){
+    void checkAllOperationsDone() {
 
-        if(isAddedInUser &&
-        isAddedInVendor &&
-        isRemovedFromUser &&
-        isRemovedFromVendor){
+        if (isAddedInUser &&
+                isAddedInVendor &&
+                isRemovedFromUser &&
+                isRemovedFromVendor) {
 
             dialogHelper.hideProgressDialog();
         }
     }
 
 
-    void showPaymentDialog(){
+    void showPaymentDialog() {
         Dialog paymentDialog = new Dialog(this);
         paymentDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         paymentDialog.setContentView(R.layout.layout_payment);
@@ -396,36 +406,66 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
         int amount = Integer.parseInt(activeOrder.getQuote());
 
-        textViewAmount.setText("Rs. "+ NumberFormat.getNumberInstance(Locale.US).format(amount));
+        textViewAmount.setText("Rs. " + NumberFormat.getNumberInstance(Locale.US).format(amount));
 
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
-                if (params != null) {
-                    dialogHelper.showProgressDialog("Making payment");
-                    ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
-                            .createWithPaymentMethodCreateParams(params, paymentIntentClientSecret);
-                    final Context context = getApplicationContext();
-                    stripe = new Stripe(
-                            context,
-                            PaymentConfiguration.getInstance(context).getPublishableKey()
-                    );
-                    stripe.confirmPayment(CompleteOrderActivity.this, confirmParams);
-                }
+                dialogHelper.showProgressDialog("Making payment");
+
+                int amount = Integer.parseInt(activeOrder.getQuote());
+                stripePayment(amount)
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    Exception e = task.getException();
+                                    if (e instanceof FirebaseFunctionsException) {
+                                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                                        FirebaseFunctionsException.Code code = ffe.getCode();
+                                        Object details = ffe.getDetails();
+                                    }
+                                }
+                                else {
+                                    Log.i("THOO server", task.getResult());
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(task.getResult());
+                                        paymentIntentClientSecret = jsonObject.getString("clientSecret");
+
+                                        PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
+                                        if (params != null) {
+                                            ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
+                                                    .createWithPaymentMethodCreateParams(params, paymentIntentClientSecret);
+                                            final Context context = getApplicationContext();
+                                            stripe = new Stripe(
+                                                    context,
+                                                    PaymentConfiguration.getInstance(context).getPublishableKey()
+                                            );
+                                            stripe.confirmPayment(CompleteOrderActivity.this, confirmParams);
+                                            paymentDialog.dismiss();
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(CompleteOrderActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+                                        dialogHelper.hideProgressDialog();
+                                    }
+                                }
+                            }
+                        });
+
             }
         });
 
-        try{
+        try {
             paymentDialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    void showRateAndReviewVendorDialog(){
+    void showRateAndReviewVendorDialog() {
         reviewDialog = new Dialog(this);
         reviewDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         reviewDialog.setContentView(R.layout.layout_rate_and_review);
@@ -463,13 +503,13 @@ public class CompleteOrderActivity extends AppCompatActivity {
         buttonSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(starCount == 0){
+                if (starCount == 0) {
                     Toast.makeText(CompleteOrderActivity.this, "Kindly select star rating", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 review = editTextReview.getText().toString().trim();
-                if(review.length() == 0){
+                if (review.length() == 0) {
                     Toast.makeText(CompleteOrderActivity.this, "Kindly write review", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -479,44 +519,39 @@ public class CompleteOrderActivity extends AppCompatActivity {
             }
         });
 
-        try{
+        try {
             reviewDialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    void updateRating(){
-        if(starCount == 1){
+    void updateRating() {
+        if (starCount == 1) {
             imageViewStar1.setBackgroundResource(filledStar);
             imageViewStar2.setBackgroundResource(unfilledStar);
             imageViewStar3.setBackgroundResource(unfilledStar);
             imageViewStar4.setBackgroundResource(unfilledStar);
             imageViewStar5.setBackgroundResource(unfilledStar);
-        }
-        else if(starCount == 2){
+        } else if (starCount == 2) {
             imageViewStar1.setBackgroundResource(filledStar);
             imageViewStar2.setBackgroundResource(filledStar);
             imageViewStar3.setBackgroundResource(unfilledStar);
             imageViewStar4.setBackgroundResource(unfilledStar);
             imageViewStar5.setBackgroundResource(unfilledStar);
-        }
-        else if(starCount == 3){
+        } else if (starCount == 3) {
             imageViewStar1.setBackgroundResource(filledStar);
             imageViewStar2.setBackgroundResource(filledStar);
             imageViewStar3.setBackgroundResource(filledStar);
             imageViewStar4.setBackgroundResource(unfilledStar);
             imageViewStar5.setBackgroundResource(unfilledStar);
-        }
-        else if(starCount == 4){
+        } else if (starCount == 4) {
             imageViewStar1.setBackgroundResource(filledStar);
             imageViewStar2.setBackgroundResource(filledStar);
             imageViewStar3.setBackgroundResource(filledStar);
             imageViewStar4.setBackgroundResource(filledStar);
             imageViewStar5.setBackgroundResource(unfilledStar);
-        }
-        else if(starCount == 5){
+        } else if (starCount == 5) {
             imageViewStar1.setBackgroundResource(filledStar);
             imageViewStar2.setBackgroundResource(filledStar);
             imageViewStar3.setBackgroundResource(filledStar);
@@ -526,7 +561,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
     }
 
 
-    void headerSetup(){
+    void headerSetup() {
         TextView textView = findViewById(R.id.textViewHeaderTitle);
         ImageView imageView = findViewById(R.id.imageViewBack);
 
@@ -546,7 +581,8 @@ public class CompleteOrderActivity extends AppCompatActivity {
 
     private final class PaymentResultCallback
             implements ApiResultCallback<PaymentIntentResult> {
-        @NonNull private final WeakReference<CompleteOrderActivity> activityRef;
+        @NonNull
+        private final WeakReference<CompleteOrderActivity> activityRef;
 
         PaymentResultCallback(@NonNull CompleteOrderActivity activity) {
             activityRef = new WeakReference<>(activity);
@@ -564,6 +600,7 @@ public class CompleteOrderActivity extends AppCompatActivity {
             if (status == PaymentIntent.Status.Succeeded) {
                 // Payment completed successfully
                 Toast.makeText(activity, "Payment completed", Toast.LENGTH_SHORT).show();
+                dialogHelper.hideProgressDialog();
                 makePayment();
 
 //                Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -594,12 +631,35 @@ public class CompleteOrderActivity extends AppCompatActivity {
             }
 
             // Payment request failed – allow retrying using the same payment method
-//            Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show();
-            Toast.makeText(activity, "Payment completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show();
+            dialogHelper.hideProgressDialog();
+
+//            Toast.makeText(activity, "Payment completed", Toast.LENGTH_SHORT).show();
 //            dialogHelper.hideProgressDialog();
-            makePayment();
+//            makePayment();
 
         }
+    }
+
+    private Task<String> stripePayment(int amount) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("amount", amount*100);
+
+        return mFunctions
+                .getHttpsCallable("stripePayment")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        Log.i("THOO", result);
+                        return result;
+                    }
+                });
     }
 
 }

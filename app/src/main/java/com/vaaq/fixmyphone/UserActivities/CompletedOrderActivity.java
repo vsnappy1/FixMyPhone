@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.vaaq.fixmyphone.Adapters.ActiveOrderUserAdapter;
+import com.vaaq.fixmyphone.Adapters.CompletedOrderUserAdapter;
 import com.vaaq.fixmyphone.ChatActivity;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.models.ActiveOrder;
@@ -36,7 +36,7 @@ import static com.vaaq.fixmyphone.utils.Constant.USER;
 public class CompletedOrderActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ActiveOrderUserAdapter adapter;
+    CompletedOrderUserAdapter adapter;
     ArrayList<ActiveOrder> list;
 
     DialogHelper dialogHelper;
@@ -58,8 +58,8 @@ public class CompletedOrderActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
 
-        adapter = new ActiveOrderUserAdapter(list, this, this);
-        adapter.setOnItemClickListener(new ActiveOrderUserAdapter.ClickListener() {
+        adapter = new CompletedOrderUserAdapter(list, this, this);
+        adapter.setOnItemClickListener(new CompletedOrderUserAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
 

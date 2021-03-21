@@ -39,6 +39,7 @@ public class VendorSignupActivity extends AppCompatActivity {
     EditText editTextPhone;
     EditText editTextShopName;
     EditText editTextShopAddress;
+    EditText editTextIBAN;
     EditText editTextEmail;
     EditText editTextPassword;
     Button buttonSignup;
@@ -67,6 +68,7 @@ public class VendorSignupActivity extends AppCompatActivity {
                 String phone = editTextPhone.getText().toString().trim();
                 String shopName = editTextShopName.getText().toString().trim();
                 String shopAddress = editTextShopAddress.getText().toString().trim();
+                String iban = editTextIBAN.getText().toString().trim();
                 email = editTextEmail.getText().toString().trim();
                 password = editTextPassword.getText().toString().trim();
 
@@ -90,6 +92,12 @@ public class VendorSignupActivity extends AppCompatActivity {
                     return;
                 }
 
+
+                if (iban.isEmpty()) {
+                    Toast.makeText(VendorSignupActivity.this, "Please enter bank iban#", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (email.isEmpty()) {
                     Toast.makeText(VendorSignupActivity.this, "Please enter email", Toast.LENGTH_SHORT).show();
                     return;
@@ -110,7 +118,7 @@ public class VendorSignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                Vendor vendor = new Vendor(name, phone, shopName, shopAddress, email, password);
+                Vendor vendor = new Vendor(name, phone, shopName, shopAddress,iban, email, password);
                 new SignupTask().execute(vendor);
 
             }
@@ -123,6 +131,7 @@ public class VendorSignupActivity extends AppCompatActivity {
         editTextPhone = findViewById(R.id.editTextSignupVendorPhone);
         editTextShopName = findViewById(R.id.editTextSignupVendorShopName);
         editTextShopAddress = findViewById(R.id.editTextSignupVendorShopAddress);
+        editTextIBAN = findViewById(R.id.editTextSignupUserIban);
         editTextEmail = findViewById(R.id.editTextSignupVendorEmail);
         editTextPassword = findViewById(R.id.editTextSignupVendorPassword);
         buttonSignup = findViewById(R.id.buttonSignupVendor);

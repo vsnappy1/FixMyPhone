@@ -14,11 +14,15 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +32,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.vaaq.fixmyphone.R;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.vaaq.fixmyphone.utils.Constant.USER;
@@ -46,6 +54,8 @@ public class DashboardActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     FragmentAdapter fragmentAdapter;
+    private FirebaseFunctions mFunctions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         Objects.requireNonNull(getSupportActionBar()).hide();
         headerSetup();
+        mFunctions = FirebaseFunctions.getInstance();
 
         initViews();
         drawer = findViewById(R.id.dashboard_user);
@@ -186,6 +197,28 @@ public class DashboardActivity extends AppCompatActivity {
                     return "";
             }
         }
+    }
+
+
+    private Task<String> stripePayment(int amount) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("amount", amount*100);
+
+        return mFunctions
+                .getHttpsCallable("stripePayment")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        Log.i("THOO", result);
+                        return result;
+                    }
+                });
     }
 
 

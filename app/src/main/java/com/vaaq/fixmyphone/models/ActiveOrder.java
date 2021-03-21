@@ -100,4 +100,16 @@ public class ActiveOrder implements Serializable {
     public String getOrderId() {
         return orderId;
     }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public void setRateAndReviewStatus(String rateAndReviewStatus) {
+        this.rateAndReviewStatus = rateAndReviewStatus;
+    }
 }

@@ -6,16 +6,18 @@ public class Vendor {
     private String phone;
     private String shopName;
     private String shopAddress;
+    private String ibanNumber;
     private String email;
     private String password;
 
     public Vendor(){}
 
-    public Vendor(String name, String phone, String shopName, String shopAddress, String email, String password) {
+    public Vendor(String name, String phone, String shopName, String shopAddress, String ibanNumber, String email, String password) {
         this.name = name;
         this.phone = phone;
         this.shopName = shopName;
         this.shopAddress = shopAddress;
+        this.ibanNumber = ibanNumber;
         this.email = email;
         this.password = password;
     }
@@ -36,7 +38,11 @@ public class Vendor {
         return shopAddress;
     }
 
-//    public String getEmail() {
+    public String getIbanNumber() {
+        return ibanNumber;
+    }
+
+    //    public String getEmail() {
 //        return email;
 //    }
 //
