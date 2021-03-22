@@ -171,6 +171,7 @@ public class LoginVendorFragment extends Fragment {
                         if (firebaseUser != null) {
                             if(firebaseUser.getDisplayName() == null){
                                 Log.i(TAG, "Login Success");
+                                getActivity().finish();
                                 startActivity(new Intent(getContext(), DashboardVendorActivity.class));
                             }
                             else {

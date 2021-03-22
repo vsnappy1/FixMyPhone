@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.vaaq.fixmyphone.MainActivity;
 import com.vaaq.fixmyphone.R;
 import com.vaaq.fixmyphone.Services.MyFirebaseMessagingService;
 import com.vaaq.fixmyphone.UserActivities.ActiveOrderUserFragment;
@@ -56,6 +57,15 @@ public class DashboardVendorActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     FragmentAdapter fragmentAdapter;
+
+    int backPressCount = 0;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backPressCount = 0;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +96,13 @@ public class DashboardVendorActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), CompletedOrderVendorActivity.class));
                         return true;
                     case R.id.actionLogout:
-                        Toast.makeText(DashboardVendorActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DashboardVendorActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
                         drawer.closeDrawer(GravityCompat.START);
+                        Intent loginscreen = new Intent(DashboardVendorActivity.this, MainActivity.class);
+                        finish();
+                        loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(loginscreen);
                         return true;
                     default:
                         return true;
@@ -209,5 +224,16 @@ public class DashboardVendorActivity extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(backPressCount == 0){
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            backPressCount++;
+        }else {
+            super.onBackPressed();
+        }
     }
 }

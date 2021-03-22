@@ -176,7 +176,9 @@ public class LoginUserFragment extends Fragment {
 
                         if (user.getDisplayName() != null) {
                             Log.i(TAG, "Login Success");
+                            getActivity().finish();
                             startActivity(new Intent(getContext(), DashboardActivity.class));
+
                         }
                     }
                 });

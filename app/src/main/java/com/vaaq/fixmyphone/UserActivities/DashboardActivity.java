@@ -36,6 +36,7 @@ import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.vaaq.fixmyphone.MainActivity;
 import com.vaaq.fixmyphone.R;
 
 import java.util.HashMap;
@@ -56,7 +57,13 @@ public class DashboardActivity extends AppCompatActivity {
     ViewPager viewPager;
     FragmentAdapter fragmentAdapter;
     private FirebaseFunctions mFunctions;
+    int backPressCount = 0;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backPressCount = 0;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +100,12 @@ public class DashboardActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), QuotesActivity.class));
                         return true;
                     case R.id.actionLogout:
-                        Toast.makeText(DashboardActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
                         drawer.closeDrawer(GravityCompat.START);
+                        Intent loginscreen = new Intent(DashboardActivity.this, MainActivity.class);
+                        finish();
+                        loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(loginscreen);
                         return true;
                     default:
                         return true;
@@ -201,7 +212,14 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
 
-
-
+        if(backPressCount == 0){
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            backPressCount++;
+        }else {
+            super.onBackPressed();
+        }
+    }
 }

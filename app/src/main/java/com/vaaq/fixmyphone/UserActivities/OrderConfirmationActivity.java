@@ -88,6 +88,16 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
         initViews();
 
+        if (VENDOR.equals(getIntent().getStringExtra("from"))) {
+            TextView textViewTitle1 = findViewById(R.id.textViewTitle1);
+            TextView textViewTitle2 = findViewById(R.id.textViewTitle2);
+
+            textViewTitle1.setVisibility(View.GONE);
+            textViewTitle2.setVisibility(View.GONE);
+            textViewShopName.setVisibility(View.GONE);
+            textViewQuote.setVisibility(View.GONE);
+        }
+
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -95,8 +105,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         selectedMinuteFrom = 0;
         textViewPickupTimeFrom.setText("12:00 PM");
         textViewPickupTimeTo.setText("6:00 PM");
-
-
 
 
         dialogHelper = new DialogHelper(this);
@@ -145,20 +153,20 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(OrderConfirmationActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        String AM_PM ;
-                        if(selectedHour < 12) {
+                        String AM_PM;
+                        if (selectedHour < 12) {
                             AM_PM = "AM";
                         } else {
                             AM_PM = "PM";
-                            if(selectedHour > 12){
+                            if (selectedHour > 12) {
                                 selectedHour -= 12;
                             }
                         }
 
-                        if(selectedMinute / 10 == 0){
-                            textViewPickupTimeFrom.setText( selectedHour + ":0" + selectedMinute+" "+AM_PM);
-                        }else {
-                            textViewPickupTimeFrom.setText( selectedHour + ":" + selectedMinute+" "+AM_PM);
+                        if (selectedMinute / 10 == 0) {
+                            textViewPickupTimeFrom.setText(selectedHour + ":0" + selectedMinute + " " + AM_PM);
+                        } else {
+                            textViewPickupTimeFrom.setText(selectedHour + ":" + selectedMinute + " " + AM_PM);
                         }
                     }
                 }, hour, minute, false);//Yes 12 hour time
@@ -178,28 +186,28 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
-                        if(selectedHour < selectedHourFrom){
+                        if (selectedHour < selectedHourFrom) {
                             Toast.makeText(OrderConfirmationActivity.this, "Pickup to time must be greater then from time", Toast.LENGTH_SHORT).show();
                             return;
-                        }else if(selectedHour == selectedHourFrom && selectedMinute< selectedMinuteFrom){
+                        } else if (selectedHour == selectedHourFrom && selectedMinute < selectedMinuteFrom) {
                             Toast.makeText(OrderConfirmationActivity.this, "Pickup to time must be greater then from time", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        String AM_PM ;
-                        if(selectedHour < 12) {
+                        String AM_PM;
+                        if (selectedHour < 12) {
                             AM_PM = "AM";
                         } else {
                             AM_PM = "PM";
-                            if(selectedHour > 12){
+                            if (selectedHour > 12) {
                                 selectedHour -= 12;
                             }
                         }
 
-                        if(selectedMinute / 10 == 0){
-                            textViewPickupTimeTo.setText( selectedHour + ":0" + selectedMinute+" "+AM_PM);
-                        }else {
-                            textViewPickupTimeTo.setText( selectedHour + ":" + selectedMinute+" "+AM_PM);
+                        if (selectedMinute / 10 == 0) {
+                            textViewPickupTimeTo.setText(selectedHour + ":0" + selectedMinute + " " + AM_PM);
+                        } else {
+                            textViewPickupTimeTo.setText(selectedHour + ":" + selectedMinute + " " + AM_PM);
                         }
                     }
                 }, hour, minute, false);//Yes 12 hour time
@@ -214,8 +222,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
                 dialogHelper.showProgressDialog("Creating pickup request...");
                 new PickupRequestTask().execute(new JSONObject());
-
-
 
 
             }
@@ -310,29 +316,29 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 });
     }
 
-    void updateTheActiveProjectsUser(String key){
+    void updateTheActiveProjectsUser(String key) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(USER).child(uid).child(ACTIVE_ORDER_IDS);
         databaseReference.push().setValue(key)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.i(TAG, "added active order id in user");
-                if(dialogHelper.isDialogBoxShowing()){
-                    dialogHelper.hideProgressDialog();
-                    startNewMainActivity(OrderConfirmationActivity.this, DashboardActivity.class);
-                }
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i(TAG, "added active order id in user");
+                        if (dialogHelper.isDialogBoxShowing()) {
+                            dialogHelper.hideProgressDialog();
+                            startNewMainActivity(OrderConfirmationActivity.this, DashboardActivity.class);
+                        }
 
-            }
-        });
+                    }
+                });
     }
 
-    void updateTheActiveProjectsVendor(String vendorId, String key){
+    void updateTheActiveProjectsVendor(String vendorId, String key) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(VENDOR).child(vendorId).child(ACTIVE_ORDER_IDS);
         databaseReference.push().setValue(key).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.i(TAG, "added active order id in vendor");
-                if(dialogHelper.isDialogBoxShowing()){
+                if (dialogHelper.isDialogBoxShowing()) {
                     dialogHelper.hideProgressDialog();
                     startNewMainActivity(OrderConfirmationActivity.this, DashboardActivity.class);
                 }
@@ -352,8 +358,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         textViewQuote = findViewById(R.id.textViewOrderConfirmationQuote);
         editTextAddress = findViewById(R.id.editTextOrderConfirmationAddress);
         textViewPickupDate = findViewById(R.id.textViewOrderConfirmationPickupDate);
-        textViewPickupTimeFrom  = findViewById(R.id.textViewOrderConfirmationPickupTimeFrom);
-        textViewPickupTimeTo  = findViewById(R.id.textViewOrderConfirmationPickupTimeTo);
+        textViewPickupTimeFrom = findViewById(R.id.textViewOrderConfirmationPickupTimeFrom);
+        textViewPickupTimeTo = findViewById(R.id.textViewOrderConfirmationPickupTimeTo);
         buttonConfirm = findViewById(R.id.buttonOrderConfirmationConfirm);
     }
 
@@ -374,7 +380,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     }
 
 
-    void headerSetup(){
+    void headerSetup() {
         TextView textView = findViewById(R.id.textViewHeaderTitle);
         ImageView imageView = findViewById(R.id.imageViewBack);
 
@@ -427,18 +433,18 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 //                            "\"pieces\":\"1\"}");
 
             RequestBody body = RequestBody.create(mediaType,
-                    "{\"pickupDate\":\""+pickupDate+"\"," +
-                            "\"pickupFromTime\":\""+pickupFromTime+"\"," +
-                            "\"pickupToTime\":\""+pickupToTime+"\"," +
+                    "{\"pickupDate\":\"" + pickupDate + "\"," +
+                            "\"pickupFromTime\":\"" + pickupFromTime + "\"," +
+                            "\"pickupToTime\":\"" + pickupToTime + "\"," +
                             "\"customerNo\":\"0\"," +
-                            "\"customerName\":\""+customerName+"\"," +
-                            "\"customerAddress\":\""+customerAddress+"\"," +
-                            "\"customerPhone\":\""+customerPhone+"\"," +
+                            "\"customerName\":\"" + customerName + "\"," +
+                            "\"customerAddress\":\"" + customerAddress + "\"," +
+                            "\"customerPhone\":\"" + customerPhone + "\"," +
                             "\"station\":\"X\"," +
                             "\"area\":\"X\"," +
                             "\"careOf\":\"0\"," +
                             "\"expectedWeight\":\"200g\"," +
-                            "\"userName\":\""+customerName+"\"," +
+                            "\"userName\":\"" + customerName + "\"," +
                             "\"pieces\":\"1\"}");
 
             Request request = new Request.Builder()
@@ -465,11 +471,11 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
             Toast.makeText(OrderConfirmationActivity.this, "Done", Toast.LENGTH_SHORT).show();
             String from = getIntent().getStringExtra("from");
-            if(VENDOR.equals(from)){
+            if (VENDOR.equals(from)) {
                 Intent intent = new Intent(getApplicationContext(), DashboardVendorActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-            }else {
+            } else {
                 dialogHelper.showProgressDialog("Creating an order...");
                 deleteGetQuoteRequest();
             }
@@ -478,7 +484,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 //            }
         }
     }
-
 
 
 }
