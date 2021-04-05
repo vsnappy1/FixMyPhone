@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VendorActivities.LoginVendorFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editTextVendorEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:text="vsnappy1@gmail.com"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
+
+        <EditText
+            android:id="@+id/editTextVendorPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Password"
+            android:padding="12dp"
+            android:password="true"
+            android:text="kumar1"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Don't have an account? "
+                android:textColor="@color/TextWhite" />
+
+            <TextView
+                android:id="@+id/textViewVendorSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:padding="4dp"
+                android:text="Register"
+                android:textColor="@color/Golden"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonVendorLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner_button"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/Black" />
+
+    </LinearLayout>
+
+</FrameLayout>

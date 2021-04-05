@@ -4,117 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VendorSignupActivity">
+    android:background="@color/Black"
+    tools:context=".VendorActivities.VendorSignupActivity">
 
-    <ScrollView
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/editTextSignupVendorName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:text="ali"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:padding="12dp"
-                android:text="ali" />
+        <EditText
+            android:id="@+id/editTextSignupVendorPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Phone #"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:text="03322397045"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Phone #"
-                android:inputType="phone"
-                android:padding="12dp"
-                android:text="03322397045" />
+        <EditText
+            android:id="@+id/editTextSignupVendorShopName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Shop name"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:text="A to Z Communication"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorShopName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Shop name"
-                android:inputType="textPersonName"
-                android:padding="12dp"
-                android:text="A to Z Communication" />
+        <EditText
+            android:id="@+id/editTextSignupVendorShopAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:text="abc"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorShopAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Address"
-                android:inputType="textPersonName"
-                android:padding="12dp"
-                android:text="abc" />
+        <EditText
+            android:id="@+id/editTextSignupUserIban"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="IBAN#"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:text="PKHABB0016285491873"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:padding="12dp"
-                android:text="vsnappy1@gmail.com" />
+        <EditText
+            android:id="@+id/editTextSignupVendorEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:text="vsnappy1@gmail.com"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <EditText
-                android:id="@+id/editTextSignupVendorPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_corner_edittext"
-                android:backgroundTint="@color/edittext_color"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="12dp"
-                android:password="false"
-                android:text="kumar1" />
+        <EditText
+            android:id="@+id/editTextSignupVendorPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_corner_edittext"
+            android:backgroundTint="@color/edittext_color"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:password="false"
+            android:text="kumar1"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
-            <Button
-                android:id="@+id/buttonSignupVendor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_corner_button"
-                android:text="Register" />
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/buttonSignupVendor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner_button"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

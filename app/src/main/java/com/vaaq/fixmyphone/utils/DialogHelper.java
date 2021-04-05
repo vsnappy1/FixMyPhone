@@ -28,6 +28,13 @@ public class DialogHelper {
 
     }
 
+    public boolean isDialogBoxShowing(){
+        if(dialog == null){
+            return false;
+        }
+        return dialog.isShowing();
+    }
+
     public void showProgressDialog(String message) {
 
         dialog = new Dialog(context);
@@ -38,6 +45,12 @@ public class DialogHelper {
 
         TextView text = dialog.findViewById(R.id.textViewDialog);
         text.setText(message);
-        dialog.show();
+
+        try{
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
