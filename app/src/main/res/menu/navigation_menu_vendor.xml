@@ -2,12 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
    <item android:id="@+id/actionCompletedOrder"
-       android:icon="@drawable/ic_arrow_back"
        android:title="Completed Orders"/>
     
 
     <item android:id="@+id/actionLogout"
-        android:icon="@drawable/ic_arrow_back"
         android:title="Logout"/>
 
 </menu>

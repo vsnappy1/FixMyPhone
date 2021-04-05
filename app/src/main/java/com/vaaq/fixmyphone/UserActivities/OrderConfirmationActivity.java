@@ -78,6 +78,10 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     int selectedHourFrom;
     int selectedMinuteFrom;
 
+    int year;
+    int month;
+    int day;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +115,18 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final int year = cal.get(Calendar.YEAR);
-        final int month = cal.get(Calendar.MONTH);
-        final int day = cal.get(Calendar.DAY_OF_MONTH);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH) + 1;
+
+        if(day == 32){
+            day = 1;
+            month++;
+            if(month == 13){
+                month = 1;
+                year++;
+            }
+        }
 
         textViewShopName.setText(VendorProfileActivity.shopName);
         textViewQuote.setText(ResponsesActivity.quote);

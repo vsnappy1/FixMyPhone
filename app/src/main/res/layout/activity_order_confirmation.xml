@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@drawable/rounded_corner_item_background"
-        android:backgroundTint="#E8E8E8"
+        android:backgroundTint="@color/edittext_color"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonOrderConfirmationConfirm"
@@ -32,33 +32,51 @@
             android:id="@+id/textViewTitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shop Name" />
+            android:text="Shop Name"
+            android:textColor="@color/edittext_text_color" />
 
         <TextView
             android:id="@+id/textViewOrderConfirmationShopName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textViewTitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quote" />
+            android:text="Quote"
+            android:textColor="@color/edittext_text_color" />
 
         <TextView
             android:id="@+id/textViewOrderConfirmationQuote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pickup location" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pickup location"
+                android:textColor="@color/edittext_text_color" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editTextOrderConfirmationAddress"
@@ -66,45 +84,91 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="address" />
+            android:text="address"
+            android:textColor="@color/edittext_text_color" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pickup date" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pickup date"
+                android:textColor="@color/edittext_text_color" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewOrderConfirmationPickupDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pickup time from" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pickup time from"
+                android:textColor="@color/edittext_text_color" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewOrderConfirmationPickupTimeFrom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pickup Time To" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pickup time to"
+                android:textColor="@color/edittext_text_color" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="0"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewOrderConfirmationPickupTimeTo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="24sp" />
     </LinearLayout>
 

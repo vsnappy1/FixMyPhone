@@ -7,7 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:background="@drawable/rounded_corner_item_background"
-    android:backgroundTint="#F1F1F1"
+    android:backgroundTint="@color/ActiveOrderBackground"
     android:padding="8dp">
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="Madina Communications"
-                android:textColor="@color/black"
+                android:textColor="@color/edittext_text_color"
                 android:textSize="18sp"
                 android:transitionName="transitionName_username" />
 
@@ -95,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Very nice service, had a very nice experice with the seller wornderful expericence"
+            android:textColor="#FAFAFA"
             android:textSize="14sp"
             android:transitionName="transitionName_username" />
 

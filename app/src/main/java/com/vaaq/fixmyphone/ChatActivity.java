@@ -216,7 +216,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (editTextMessage.length() > 0) {
+                if (editTextMessage.getText().toString().trim().length() > 0) {
                     sendMessage();
                 } else {
                     Toast.makeText(ChatActivity.this, "Please write something", Toast.LENGTH_SHORT).show();

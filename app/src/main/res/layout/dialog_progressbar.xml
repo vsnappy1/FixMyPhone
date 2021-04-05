@@ -34,7 +34,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="16dp"
             android:text="TextView"
-            android:textColor="@color/black"
+            android:textColor="@color/edittext_text_color"
             android:textSize="18sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

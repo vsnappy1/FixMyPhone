@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
     android:background="@drawable/rounded_corner_item_background"
-    android:backgroundTint="#F1F1F1"
+    android:backgroundTint="@color/ActiveOrderBackground"
+    android:elevation="5dp"
     android:paddingStart="8dp"
     android:paddingTop="2dp"
     android:paddingEnd="8dp"
@@ -35,6 +34,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="0"
                 android:text="SAMSUNG"
+                android:textColor="@color/edittext_text_color"
                 android:transitionName="transitionName_brand" />
 
             <TextView
@@ -46,6 +46,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="0"
                 android:text="Galaxy s21"
+                android:textColor="@color/edittext_text_color"
                 android:transitionName="transitionName_model" />
 
             <TextView
@@ -56,7 +57,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="2"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/Golden"
                 android:textSize="18sp"
                 android:transitionName="transitionName_username" />
 
@@ -69,6 +70,7 @@
             android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:text="My phone's screen is broken, how much it will cost?"
+            android:textColor="#FAFAFA"
             android:transitionName="transitionName_description" />
 
     </LinearLayout>

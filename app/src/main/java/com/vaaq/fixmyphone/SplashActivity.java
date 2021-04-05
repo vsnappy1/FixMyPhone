@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }
-        },1000);
+        },2000);
 
 //        stripePayment(345)
 //                .addOnCompleteListener(new OnCompleteListener<String>() {

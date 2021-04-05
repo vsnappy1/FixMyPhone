@@ -35,6 +35,10 @@ public class ResponsesActivity extends AppCompatActivity {
     public static String quote;
     public static String vendorId;
 
+    TextView textViewResponseBrand;
+    TextView textViewSubmitQuoteModel;
+    TextView textViewSubmitQuoteDescription;
+
 
 
     @Override
@@ -44,9 +48,16 @@ public class ResponsesActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         headerSetup();
 
+        textViewResponseBrand = findViewById(R.id.textViewResponseBrand);
+        textViewSubmitQuoteModel = findViewById(R.id.textViewSubmitQuoteModel);
+        textViewSubmitQuoteDescription = findViewById(R.id.textViewSubmitQuoteDescription);
+
 
         Intent intent = getIntent();
         getQuote = (GetQuote) intent.getSerializableExtra("quoteRequest");
+        textViewResponseBrand.setText(getQuote.getBrand());
+        textViewSubmitQuoteModel.setText(getQuote.getModel());
+        textViewSubmitQuoteDescription.setText(getQuote.getDescription());
         list = getQuote.getList();
 
         recyclerView = findViewById(R.id.recyclerViewResponses);

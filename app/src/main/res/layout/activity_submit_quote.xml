@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Black"
     tools:context=".VendorActivities.SubmitQuoteActivity">
 
     <include
@@ -30,13 +31,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="0"
             android:background="@drawable/rounded_corner_item_background"
-            android:backgroundTint="#F1F1F1"
+            android:backgroundTint="@color/ActiveOrderBackground"
             android:elevation="5dp"
             android:padding="8dp">
 
@@ -75,7 +73,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:layout_weight="0"
-                            android:text="Brand: " />
+                            android:text="Brand: "
+                            android:textColor="@color/edittext_text_color" />
 
                         <TextView
                             android:id="@+id/textView8"
@@ -83,7 +82,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:layout_weight="0"
-                            android:text="Model:" />
+                            android:text="Model:"
+                            android:textColor="@color/edittext_text_color" />
 
                         <TextView
                             android:id="@+id/textView10"
@@ -91,7 +91,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:layout_weight="0"
-                            android:text="Description: " />
+                            android:text="Description: "
+                            android:textColor="@color/edittext_text_color" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -108,6 +109,7 @@
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:text="SAMSUNG"
+                            android:textColor="@color/edittext_text_color"
                             android:transitionName="transitionName_brand" />
 
                         <TextView
@@ -117,6 +119,7 @@
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:text="Galaxy s21"
+                            android:textColor="@color/edittext_text_color"
                             android:transitionName="transitionName_model" />
 
                         <TextView
@@ -126,6 +129,7 @@
                             android:layout_marginTop="2dp"
                             android:layout_weight="1"
                             android:text="My phone's screen is broken, how much it will cost?"
+                            android:textColor="@color/edittext_text_color"
                             android:transitionName="transitionName_description" />
                     </LinearLayout>
 
@@ -147,13 +151,14 @@
                 android:layout_height="250dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner_edittext2"
+                android:backgroundTint="@color/edittext_color"
                 android:ems="10"
                 android:gravity="top|left"
                 android:hint="Describe your offer here..."
                 android:inputType="textMultiLine|textPersonName"
                 android:padding="16dp"
-                android:textColor="@color/dark_grey"
-                android:textColorHint="#636363" />
+                android:textColor="@color/edittext_text_color"
+                android:textColorHint="@color/hint_color" />
 
             <EditText
                 android:id="@+id/editTextSubmitQuoteQuote"
@@ -162,21 +167,20 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner_edittext2"
+                android:backgroundTint="@color/edittext_color"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Quote (e.g. 5000)"
                 android:inputType="number"
                 android:padding="16dp"
-                android:textColor="@color/dark_grey"
-                android:textColorHint="#636363" />
+                android:textColor="@color/edittext_text_color"
+                android:textColorHint="@color/hint_color" />
 
             <Button
                 android:id="@+id/buttonSubmitQuoteSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner_edittext2"
@@ -184,7 +188,7 @@
                 android:padding="10dp"
                 android:text="Submit"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/Black"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

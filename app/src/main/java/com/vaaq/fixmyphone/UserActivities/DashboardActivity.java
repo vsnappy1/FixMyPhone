@@ -59,6 +59,9 @@ public class DashboardActivity extends AppCompatActivity {
     private FirebaseFunctions mFunctions;
     int backPressCount = 0;
 
+    TextView textViewDrawerName;
+    TextView textViewDrawerEmail;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -77,6 +80,9 @@ public class DashboardActivity extends AppCompatActivity {
         drawer = findViewById(R.id.dashboard_user);
         tabLayout = findViewById(R.id.tabLayout2);
         viewPager = findViewById(R.id.viewPager);
+        nv = findViewById(R.id.nv);
+        textViewDrawerName = nv.getHeaderView(0).findViewById(R.id.textViewDrawerName);
+        textViewDrawerEmail = nv.getHeaderView(0).findViewById(R.id.textViewDrawerEmail);
 
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), 2);
         viewPager.setAdapter(fragmentAdapter);
@@ -84,10 +90,7 @@ public class DashboardActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
 
-
-
 //        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -95,9 +98,11 @@ public class DashboardActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.actionCompletedOrder:
                         startActivity(new Intent(getApplicationContext(), CompletedOrderActivity.class));
+                        drawer.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.actionQuotes:
                         startActivity(new Intent(getApplicationContext(), QuotesActivity.class));
+                        drawer.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.actionLogout:
                         FirebaseAuth.getInstance().signOut();
@@ -139,6 +144,9 @@ public class DashboardActivity extends AppCompatActivity {
                 HashMap<String, String> hashMap = (HashMap<String, String>) snapshot.getValue();
                 address = hashMap.get("address");
                 userName = hashMap.get("name");
+
+                textViewDrawerName.setText(userName);
+                textViewDrawerEmail.setText(firebaseUser.getEmail());
             }
 
             @Override
@@ -215,10 +223,10 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(backPressCount == 0){
+        if (backPressCount == 0) {
             Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
             backPressCount++;
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

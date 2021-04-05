@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:gravity="center"
-        android:text="Copyrights Randos 2020-2021\nAll Rights Reserved"
+        android:text="Copyrights VAAQ 2020-2021\nAll Rights Reserved"
         android:textColor="@color/TextWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

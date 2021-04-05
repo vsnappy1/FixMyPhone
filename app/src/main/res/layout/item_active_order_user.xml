@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:layout_marginBottom="16dp"
     android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
     android:background="@drawable/rounded_corner_item_background"
-    android:backgroundTint="#F1F1F1"
+    android:backgroundTint="@color/ActiveOrderBackground"
     android:elevation="5dp"
     android:padding="8dp">
 
@@ -25,14 +25,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Order Id" />
+                android:text="Order Id"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -44,14 +46,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Brand" />
+                android:text="Brand"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,14 +67,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Model" />
+                android:text="Model"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderModel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,14 +88,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Description" />
+                android:text="Description"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,14 +109,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Shop Name" />
+                android:text="Shop Name"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderShopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,14 +130,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Quote" />
+                android:text="Quote"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderQuote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -139,14 +151,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Message" />
+                android:text="Message"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -158,14 +172,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Time" />
+                android:text="Time"
+                android:textColor="@color/edittext_text_color" />
 
             <TextView
                 android:id="@+id/textViewItemActiveOrderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/edittext_text_color" />
         </LinearLayout>
 
         <TextView
@@ -174,6 +190,6 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="Tap to chat"
-            android:textColor="@color/teal_200" />
+            android:textColor="@color/Golden" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/Black">
+    android:background="#313131">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,17 +22,17 @@
             app:srcCompat="@drawable/ic_person" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textViewDrawerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textColor="@color/TextWhite" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/textViewDrawerEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Address"
+            android:text="Email"
             android:textColor="@color/TextWhite" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

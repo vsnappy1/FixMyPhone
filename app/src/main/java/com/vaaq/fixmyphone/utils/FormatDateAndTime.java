@@ -18,7 +18,10 @@ public class FormatDateAndTime {
             String strDate = "----";
             if(minute < 60){
 
-                if(minute == 1){
+                if(minute == 0){
+                    strDate = "";
+                }
+                else if(minute == 1){
                     strDate = minute+" min ago";
                 }
                 else {

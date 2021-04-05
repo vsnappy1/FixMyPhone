@@ -39,7 +39,8 @@
             android:hint="Name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:text="ali" />
+            android:textColor="@color/TextWhite"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupUserPhone"
@@ -53,7 +54,8 @@
             android:hint="Phone #"
             android:inputType="phone"
             android:padding="12dp"
-            android:text="03322397045" />
+            android:textColor="@color/TextWhite"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupUserAddress"
@@ -67,7 +69,8 @@
             android:hint="Address"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:text="abc" />
+            android:textColor="@color/TextWhite"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupUserEmail"
@@ -81,7 +84,8 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:text="vsnappy1@gmail.com" />
+            android:textColor="@color/TextWhite"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupUserPassword"
@@ -96,7 +100,8 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:password="false"
-            android:text="kumar1" />
+            android:textColor="@color/TextWhite"
+            android:textColorHint="@color/hint_color" />
 
         <Button
             android:id="@+id/buttonSignupUser"

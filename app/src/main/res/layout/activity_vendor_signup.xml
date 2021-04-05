@@ -39,7 +39,9 @@
             android:hint="Name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:text="ali" />
+            android:text="ali"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupVendorPhone"
@@ -53,7 +55,9 @@
             android:hint="Phone #"
             android:inputType="phone"
             android:padding="12dp"
-            android:text="03322397045" />
+            android:text="03322397045"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupVendorShopName"
@@ -67,7 +71,9 @@
             android:hint="Shop name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:text="A to Z Communication" />
+            android:text="A to Z Communication"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupVendorShopAddress"
@@ -81,7 +87,9 @@
             android:hint="Address"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:text="abc" />
+            android:text="abc"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupUserIban"
@@ -95,7 +103,9 @@
             android:hint="IBAN#"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:text="PKHABB0016285491873" />
+            android:text="PKHABB0016285491873"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupVendorEmail"
@@ -109,7 +119,9 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:text="vsnappy1@gmail.com" />
+            android:text="vsnappy1@gmail.com"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <EditText
             android:id="@+id/editTextSignupVendorPassword"
@@ -124,7 +136,9 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:password="false"
-            android:text="kumar1" />
+            android:text="kumar1"
+            android:textColor="@color/edittext_text_color"
+            android:textColorHint="@color/hint_color" />
 
         <Button
             android:id="@+id/buttonSignupVendor"

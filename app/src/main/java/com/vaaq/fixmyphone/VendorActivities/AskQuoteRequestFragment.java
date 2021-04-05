@@ -98,8 +98,6 @@ public class AskQuoteRequestFragment extends Fragment {
         adapter.setOnItemClickListener(new AskQuoteRequestAdapter.ClickListener() {
             @Override
             public void onClick(View itemView, int position) {
-                Toast.makeText(getContext(), list.get(position).getDescription(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getContext(), SubmitQuoteActivity.class);
                 intent.putExtra("quoteRequest", list.get(position));
                 startActivity(intent);

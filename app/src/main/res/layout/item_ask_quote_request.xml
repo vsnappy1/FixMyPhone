@@ -7,7 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:background="@drawable/rounded_corner_item_background"
-    android:backgroundTint="#F1F1F1"
+    android:backgroundTint="@color/ActiveOrderBackground"
     android:elevation="5dp"
     android:padding="8dp">
 
@@ -25,8 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/edittext_text_color"
             android:textSize="18sp"
-            android:transitionName="transitionName_username"/>
+            android:transitionName="transitionName_username" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_weight="0"
-                    android:text="Brand: " />
+                    android:text="Brand: "
+                    android:textColor="@color/edittext_text_color" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -53,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_weight="0"
-                    android:text="Model:" />
+                    android:text="Model:"
+                    android:textColor="@color/edittext_text_color" />
 
                 <TextView
                     android:id="@+id/textView10"
@@ -61,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_weight="0"
-                    android:text="Description: " />
+                    android:text="Description: "
+                    android:textColor="@color/edittext_text_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +82,8 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:text="SAMSUNG"
-                    android:transitionName="transitionName_brand"/>
+                    android:textColor="@color/edittext_text_color"
+                    android:transitionName="transitionName_brand" />
 
                 <TextView
                     android:id="@+id/textViewItemAskQuoteModel"
@@ -87,7 +92,8 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:text="Galaxy s21"
-                    android:transitionName="transitionName_model"/>
+                    android:textColor="@color/edittext_text_color"
+                    android:transitionName="transitionName_model" />
 
                 <TextView
                     android:id="@+id/textViewItemAskQuoteDescription"
@@ -96,7 +102,8 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:text="My phone's screen is broken, how much it will cost?"
-                    android:transitionName="transitionName_description"/>
+                    android:textColor="@color/edittext_text_color"
+                    android:transitionName="transitionName_description" />
             </LinearLayout>
 
         </LinearLayout>

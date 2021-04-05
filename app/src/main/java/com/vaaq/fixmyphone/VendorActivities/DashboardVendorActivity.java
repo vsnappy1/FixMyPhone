@@ -58,6 +58,9 @@ public class DashboardVendorActivity extends AppCompatActivity {
     ViewPager viewPager;
     FragmentAdapter fragmentAdapter;
 
+    TextView textViewDrawerName;
+    TextView textViewDrawerEmail;
+
     int backPressCount = 0;
 
     @Override
@@ -78,6 +81,10 @@ public class DashboardVendorActivity extends AppCompatActivity {
         drawer = findViewById(R.id.dashboard_user);
         tabLayout = findViewById(R.id.tabLayout2);
         viewPager = findViewById(R.id.viewPager);
+        nv = findViewById(R.id.nv);
+
+        textViewDrawerName = nv.getHeaderView(0).findViewById(R.id.textViewDrawerName);
+        textViewDrawerEmail = nv.getHeaderView(0).findViewById(R.id.textViewDrawerEmail);
 
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), 2);
         viewPager.setAdapter(fragmentAdapter);
@@ -86,7 +93,6 @@ public class DashboardVendorActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        nv = findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -94,6 +100,7 @@ public class DashboardVendorActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.actionCompletedOrder:
                         startActivity(new Intent(getApplicationContext(), CompletedOrderVendorActivity.class));
+                        drawer.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.actionLogout:
 //                        Toast.makeText(DashboardVendorActivity.this, "Logout", Toast.LENGTH_SHORT).show();
@@ -132,6 +139,9 @@ public class DashboardVendorActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String, String> hashMap = (HashMap<String, String>) snapshot.getValue();
                 SHOP_NAME = hashMap.get("shopName");
+
+                textViewDrawerName.setText(hashMap.get("name"));
+                textViewDrawerEmail.setText(firebaseUser.getEmail());
 
             }
 
